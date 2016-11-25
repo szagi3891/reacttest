@@ -7,16 +7,18 @@ import { List } from 'immutable';
 class App extends Component {
 
     constructor() {
+        super();
+
         this.state = List.of([
-            User({
+            new User({
                 firstName: 'user1a',
                 lastName: 'user1b'
             }),
-            User({
+            new User({
                 firstName: 'user2a',
                 lastName: 'user2b'
             }),
-            User({
+            new User({
                 firstName: 'user3a',
                 lastName: 'user3b'
             })
@@ -33,7 +35,7 @@ class App extends Component {
                 <p className="App-intro">
                     To get started, edit <code>src/App.js</code> and save to reload.
                 </p>
-                <List list={list} />
+                <List list={this.state.list} />
             </div>
         );
     }
