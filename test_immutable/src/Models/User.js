@@ -1,20 +1,31 @@
+/* @flow */
 import { Map } from 'extendable-immutable';
+
+type UserRecordType = {|
+    id: number,
+    firstName: string,
+    lastName: string
+|};
 
 class User extends Map {
 
-    constructor(value) {
+    constructor(value: UserRecordType) {
         super(value);
     }
 
-    fullName() {
+    id(): number {
+        return this.get('id');
+    }
+
+    fullName(): string {
         return this.get('firstName') + ' ' + this.get('lastName');
     }
 
-    firstName() {
+    firstName(): string {
         return this.get('firstName');
     }
     
-    lastName() {
+    lastName(): string {
         return this.get('lastName');
     }
 }
