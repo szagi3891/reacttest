@@ -32,12 +32,34 @@ class App extends Component {
                 id: 429,
                 firstName: 'user3a',
                 lastName: 'user3b'
+            }),
+            new User({
+                id: 450,
+                firstName: 'user4a',
+                lastName: 'user4b'
+            }),
+            new User({
+                id: 590,
+                firstName: 'user5a',
+                lastName: 'user5b'
+            }),
+            new User({
+                id: 492,
+                firstName: 'user6a',
+                lastName: 'user6b'
             })
         );
 
         this.state = {
             list: list
         };
+        
+        setInterval(() => {
+            const newList = this.state.list.update(3, (item: User): User => item.update({lastName: item.lastName + '!'}));
+            this.setState({
+                list: newList
+            });
+        }, 4000);
     }
 
     render() {

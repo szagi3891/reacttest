@@ -13,7 +13,7 @@ class User extends Map {
         super(value);
     }
 
-    id(): number {
+    get id(): number {
         return this.get('id');
     }
 
@@ -21,14 +21,30 @@ class User extends Map {
         return this.get('firstName') + ' ' + this.get('lastName');
     }
 
-    firstName(): string {
+    get firstName(): string {
         return this.get('firstName');
     }
     
-    lastName(): string {
+    get lastName(): string {
         return this.get('lastName');
     }
+
+    update(newData: $Shape<UserRecordType>): User {
+        console.info('newData', newData);
+        //return super.update(newData);
+        
+        return super.merge(newData);
+    } 
 }
+
+/*
+class Test {
+}
+
+const inst_test = new Test();
+
+console.info('inst_test', inst_test.fff);
+*/
 
 export default User;
 

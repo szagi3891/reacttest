@@ -26,7 +26,7 @@ class ListItems extends Component {
         console.info('item,', item);
         return (
             <div className="item_listy" key={item.id}>
-                {item.fullName()}
+                {item.fullName()} - ({item.firstName}) - ({item.name})
             </div>
         );
     }
