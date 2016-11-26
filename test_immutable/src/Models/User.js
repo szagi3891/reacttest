@@ -1,16 +1,34 @@
 /* @flow */
 import { Map } from 'extendable-immutable';
+import { List } from 'immutable';
+
+type UserModelType = {|
+    id: number,
+    firstName: string,
+    lastName: string,
+    tags: Array<string>,
+|};
 
 type UserRecordType = {|
     id: number,
     firstName: string,
-    lastName: string
+    lastName: string,
+    tags: List<string>,
 |};
+
+const toImmutable = (model: UserModelType): UserRecordType => {
+    return {
+        id: model.id,
+        firstName: model.firstName,
+        lastName: model.lastName,
+        tags: List.of(...model.tags)
+    };
+};
 
 class User extends Map {
 
-    constructor(value: UserRecordType) {
-        super(value);
+    constructor(value: UserModelType) {
+        super(toImmutable(value));
     }
 
     get id(): number {
@@ -31,7 +49,11 @@ class User extends Map {
 
     update(newData: $Shape<UserRecordType>): User {
         return super.merge(newData);
-    } 
+    }
+
+    get tags(): List<string> {
+        return this.get('tags');
+    }
 }
 
 export default User;

@@ -12,11 +12,11 @@ class ListaItem extends PureComponent {
     render(): React.Element<*> {
         const { user } = this.props;
 
-        console.info('rerenderuję,', user);
+        console.info('rerenderuję element', user);
 
         return (
             <div className="item_listy">
-                {user.fullName()} - ({user.firstName}) - ({user.name})
+                {user.fullName()} - ({user.firstName}) - ({user.name}) - tags: "{user.tags.join('-')}"
             </div>
         );
     }

@@ -26,7 +26,6 @@ class ListItems extends Component {
     }
 
     _renderItem(item: User): React.Element<*> {
-        console.log('wywołuję item', item);
         return (
             <ListaItem
                 key={item.id}

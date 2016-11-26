@@ -21,32 +21,38 @@ class App extends Component {
             new User({
                 id: 4,
                 firstName: 'user1a',
-                lastName: 'user1b'
+                lastName: 'user1b',
+                tags: []
             }),
             new User({
                 id: 66,
                 firstName: 'user2a',
-                lastName: 'user2b'
+                lastName: 'user2b',
+                tags: []
             }),
             new User({
                 id: 429,
                 firstName: 'user3a',
-                lastName: 'user3b'
+                lastName: 'user3b',
+                tags: ['aa', 'bb', 'cc']
             }),
             new User({
                 id: 450,
                 firstName: 'user4a',
-                lastName: 'user4b'
+                lastName: 'user4b',
+                tags: []
             }),
             new User({
                 id: 590,
                 firstName: 'user5a',
-                lastName: 'user5b'
+                lastName: 'user5b',
+                tags: []
             }),
             new User({
                 id: 492,
                 firstName: 'user6a',
-                lastName: 'user6b'
+                lastName: 'user6b',
+                tags: []
             })
         );
 
@@ -55,11 +61,28 @@ class App extends Component {
         };
         
         setInterval(() => {
-            const newList = this.state.list.update(3, (item: User): User => item.update({lastName: item.lastName + '!'}));
+            const newList = this.state.list.update(3, (item: User): User => {
+                return item.update({
+                    lastName: item.lastName + '!'
+                });
+            });
+
             this.setState({
                 list: newList
             });
         }, 4000);
+        
+        setInterval(() => {
+            const newList = this.state.list.update(4, (item: User): User => {
+                return item.update({
+                    tags: item.tags.push('!')
+                });
+            });
+
+            this.setState({
+                list: newList
+            });
+        }, 5000);
     }
 
     render() {
