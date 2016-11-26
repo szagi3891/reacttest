@@ -1,4 +1,14 @@
 /* @flow */
+
+/*
+declare class $MapExtendable {
+}
+
+declare module 'extendable-immutable' {
+    declare var Map: $MapExtendable;
+}
+*/
+
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
@@ -88,7 +98,7 @@ class App extends Component {
     render() {
         const list_items = this.state.list;
 
-        console.warn('wysyłam listę', list_items);
+        console.warn('główny render', list_items);
 
         return (
             <div className="App">
