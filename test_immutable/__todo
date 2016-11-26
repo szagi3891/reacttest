@@ -1,0 +1,12 @@
+/*
+class Test {
+}
+
+const inst_test = new Test();
+
+console.info('inst_test', inst_test.fff);
+*/
+
+
+brak definicji rozszerzalnej mapu we flow
+to powoduje problem z niezgłaszaniem błędu w przypadku odwołania się do nieistniejącego pola

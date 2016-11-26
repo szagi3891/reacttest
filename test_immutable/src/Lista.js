@@ -16,16 +16,17 @@ class ListItems extends Component {
     render(): React.Element<*> {
         const { list } = this.props;
 
-        console.warn('odbieram listę', list);
+        console.info('renderuję listę', list);
+
         return (
             <div className="list_list">
                 {list.map(this._renderItem)} 
             </div>
         );
     }
-    
+
     _renderItem(item: User): React.Element<*> {
-        console.info('wywołuję item', item);
+        console.log('wywołuję item', item);
         return (
             <ListaItem
                 key={item.id}

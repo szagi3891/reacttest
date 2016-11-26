@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import User from './Models/User';
 
 type PropsType = {
     user: User
 };
 
-class ListaItem extends Component {
+class ListaItem extends PureComponent {
 
     props: PropsType;
 
     render(): React.Element<*> {
         const { user } = this.props;
 
-        console.info('item,', user);
+        console.info('rerenderuję,', user);
 
         return (
             <div className="item_listy">
