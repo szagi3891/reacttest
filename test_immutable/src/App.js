@@ -1,15 +1,6 @@
 /* @flow */
 
-/*
-declare class $MapExtendable {
-}
-
-declare module 'extendable-immutable' {
-    declare var Map: $MapExtendable;
-}
-*/
-
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import User from './Models/User';
@@ -20,7 +11,7 @@ type StateType = {
     list: List<User>,
 };
 
-class App extends Component {
+class App extends PureComponent {
 
     state: StateType;
 

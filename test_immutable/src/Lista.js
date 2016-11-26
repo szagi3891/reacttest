@@ -1,6 +1,6 @@
 /* @flow */
 //import autobind from 'autobind-decorator';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import User from './Models/User';
 import { List} from 'immutable';
 import ListaItem from './ListaItem';
@@ -9,7 +9,7 @@ type PropsType = {
     list: List<User>
 };
 
-class ListItems extends Component {
+class ListItems extends PureComponent {
     
     props: PropsType;
 

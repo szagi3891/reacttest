@@ -3,6 +3,7 @@
 [include]
 
 [libs]
+<PROJECT_ROOT>/src_decl
 
 [options]
 esproposal.class_instance_fields=enable

@@ -8,5 +8,8 @@ console.info('inst_test', inst_test.fff);
 */
 
 
-brak definicji rozszerzalnej mapu we flow
+1. brak definicji rozszerzalnej mapu we flow
 to powoduje problem z niezgłaszaniem błędu w przypadku odwołania się do nieistniejącego pola
+
+2. implementacja metody shouldComponentUpdate dla komponentów które dodają wstawkę z dziedziczeniem
+    jeśli wykryte zostały primitywy, to robić porównywanie propsów i state tą samą metodą którą robi PureComponent
