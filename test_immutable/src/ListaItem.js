@@ -1,9 +1,10 @@
+/* @flow */
 import React, { PureComponent } from 'react';
 import User from './Models/User';
 
-type PropsType = {
+type PropsType = {|
     user: User
-};
+|};
 
 class ListaItem extends PureComponent {
 
