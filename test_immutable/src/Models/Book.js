@@ -1,5 +1,4 @@
 /* @flow */
-import { Map } from 'extendable-immutable';
 import BaseModel from './BaseModel';
 import { List } from 'immutable';
 
