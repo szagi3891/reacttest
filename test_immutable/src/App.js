@@ -79,7 +79,18 @@ class App extends PureComponent {
                 autors: List.of('Autor1', 'Autor2')
             }),
         );
-        
+
+/*
+        const bookItem = new BookModel({
+            id: '321',
+            title: 'Antek',
+            idn: '4355-42-32',
+            autors: List.of('Lewandowski', 'Ten od żab')
+        });
+        bookItem.title = 'dasda';
+        console.warn(bookItem.title);
+*/
+
         this.state = {
             list: list,
             books: books
