@@ -123,7 +123,6 @@ class App extends PureComponent {
     }
 
     render() {
-        //const list_items = this.state.list;
         const {list, books} = this.state;
         
         console.warn('główny render', list);

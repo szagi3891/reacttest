@@ -1,6 +1,6 @@
 /* @flow */
 import { Map } from 'extendable-immutable';
-//import BaseModel from './BaseModel';
+import BaseModel from './BaseModel';
 import { List } from 'immutable';
 
 type BookTypeModel = {|
@@ -10,11 +10,7 @@ type BookTypeModel = {|
     autors: List<string>,
 |}
 
-class Book extends Map /* extends BaseModel<Book> */ {
-
-    constructor(value: BookTypeModel) {
-        super(value);
-    }
+class Book extends BaseModel<BookTypeModel, Book> {
 
     get id(): string {
         return this.get('id');
@@ -30,10 +26,6 @@ class Book extends Map /* extends BaseModel<Book> */ {
 
     get autors(): List<string> {
         return this.get('autors');
-    }
-
-    update(newData: $Shape<BookTypeModel>): Book {
-        return super.merge(newData);
     }
 }
 

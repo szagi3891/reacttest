@@ -13,3 +13,5 @@ to powoduje problem z niezgłaszaniem błędu w przypadku odwołania się do ni
 
 2. implementacja metody shouldComponentUpdate dla komponentów które dodają wstawkę z dziedziczeniem
     jeśli wykryte zostały primitywy, to robić porównywanie propsów i state tą samą metodą którą robi PureComponent
+
+3. List - trzeba opakować typem
