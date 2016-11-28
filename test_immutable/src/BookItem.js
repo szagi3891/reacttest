@@ -1,9 +1,9 @@
 /* @flow */
 import React, { PureComponent } from 'react';
-import Book from './Models/Book';
+import BookModel from './Models/BookModel';
 
 type PropsType = {|
-    book: Book
+    book: BookModel
 |};
 
 class BookItem extends PureComponent {

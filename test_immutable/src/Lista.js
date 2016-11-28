@@ -1,15 +1,15 @@
 /* @flow */
 //import autobind from 'autobind-decorator';
 import React, { PureComponent } from 'react';
-import User from './Models/User';
-import Book from './Models/Book';
+import UserModel from './Models/UserModel';
+import BookModel from './Models/BookModel';
 import { List} from 'immutable';
 import ListaItem from './ListaItem';
 import BookItem from './BookItem';
 
 type PropsType = {|
-    list: List<User>,
-    books: List<>
+    list: List<UserModel>,
+    books: List<BookModel>
 |};
 
 class ListItems extends PureComponent {
@@ -34,7 +34,7 @@ class ListItems extends PureComponent {
         );
     }
 
-    _renderItem(item: User): React.Element<*> {
+    _renderItem(item: UserModel): React.Element<*> {
         return (
             <ListaItem
                 key={item.id}
@@ -43,7 +43,7 @@ class ListItems extends PureComponent {
         );
     }
     
-    _renderBookItem(bookItem: Book): React.Element<*> {
+    _renderBookItem(bookItem: BookModel): React.Element<*> {
         return (
             <BookItem
                 key={bookItem.id}

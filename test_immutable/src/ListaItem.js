@@ -1,9 +1,9 @@
 /* @flow */
 import React, { PureComponent } from 'react';
-import User from './Models/User';
+import UserModel from './Models/UserModel';
 
 type PropsType = {|
-    user: User
+    user: UserModel
 |};
 
 class ListaItem extends PureComponent {

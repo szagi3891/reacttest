@@ -13,8 +13,10 @@ class BaseModel<T1, T2> extends Map {
     }
 }
 
-export default BaseModel;
+export default BaseModel;//
 
+//class BaseModel<T1, T2> extends Map {
+//update(newData: $Shape<T1>): T2 {
 //https://developer.mozilla.org/pl/docs/Web/JavaScript/Referencje/Obiekty/Object/getOwnPropertyNames
 //
 

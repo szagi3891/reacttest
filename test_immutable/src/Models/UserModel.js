@@ -25,7 +25,7 @@ const toImmutable = (model: UserModelType): UserRecordType => {
     };
 };
 
-class User extends Map {
+class UserModel extends Map {
 
     constructor(value: UserModelType) {
         super(toImmutable(value));
@@ -47,7 +47,7 @@ class User extends Map {
         return this.get('lastName');
     }
 
-    update(newData: $Shape<UserRecordType>): User {
+    update(newData: $Shape<UserRecordType>): UserModel {
         return super.merge(newData);
     }
 
@@ -56,4 +56,4 @@ class User extends Map {
     }
 }
 
-export default User;
+export default UserModel;

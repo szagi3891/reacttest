@@ -3,13 +3,13 @@
 import React, { PureComponent } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import User from './Models/User';
+import UserModel from './Models/UserModel';
 import ListItems from './Lista';
 import { List } from 'immutable';
-import BookModel from './Models/Book';
+import BookModel from './Models/BookModel';
 
 type StateType = {|
-    list: List<User>,
+    list: List<UserModel>,
     books: List<BookModel>,
 |};
 
@@ -20,38 +20,38 @@ class App extends PureComponent {
     constructor() {
         super();
 
-        const list: List<User> = List.of(
-            new User({
+        const list: List<UserModel> = List.of(
+            new UserModel({
                 id: 4,
                 firstName: 'user1a',
                 lastName: 'user1b',
                 tags: []
             }),
-            new User({
+            new UserModel({
                 id: 66,
                 firstName: 'user2a',
                 lastName: 'user2b',
                 tags: []
             }),
-            new User({
+            new UserModel({
                 id: 429,
                 firstName: 'user3a',
                 lastName: 'user3b',
                 tags: ['aa', 'bb', 'cc']
             }),
-            new User({
+            new UserModel({
                 id: 450,
                 firstName: 'user4a',
                 lastName: 'user4b',
                 tags: []
             }),
-            new User({
+            new UserModel({
                 id: 590,
                 firstName: 'user5a',
                 lastName: 'user5b',
                 tags: []
             }),
-            new User({
+            new UserModel({
                 id: 492,
                 firstName: 'user6a',
                 lastName: 'user6b',
@@ -97,7 +97,7 @@ class App extends PureComponent {
         };
         
         setInterval(() => {
-            const newList = this.state.list.update(3, (item: User): User => {
+            const newList = this.state.list.update(3, (item: UserModel): UserModel => {
                 return item.update({
                     lastName: item.lastName + '!'
                 });
@@ -109,7 +109,7 @@ class App extends PureComponent {
         }, 5000);
         
         setInterval(() => {
-            const newList = this.state.list.update(4, (item: User): User => {
+            const newList = this.state.list.update(4, (item: UserModel): UserModel => {
                 return item.update({
                     tags: item.tags.push('!')
                 });
