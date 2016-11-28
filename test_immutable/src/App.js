@@ -131,6 +131,21 @@ class App extends PureComponent {
                 books: newList
             });
         }, 11000);
+
+        const bo = new BookModel({
+            id: '321',
+            title: 'Antek',
+            idn: '4355-42-32',
+            autors: List.of('Lewandowski', 'Ten od żab')
+        });
+
+        const bo2 = bo.update({
+            title: 'Antek 222 po updejt'
+        });
+
+        console.info('bo2', bo2.title, bo2.idn, bo2.autors.join('-'));
+
+        console.info('dowolna', bo2.dowolna());
     }
 
     render() {

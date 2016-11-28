@@ -9,7 +9,7 @@ type BookTypeModel = {|
     autors: List<string>,
 |}
 
-class BookModel extends BaseModel<BookTypeModel, BookModel> {
+class BookModel extends BaseModel<BookTypeModel> {
 
     get id(): string {
         return this.get('id');
@@ -25,6 +25,10 @@ class BookModel extends BaseModel<BookTypeModel, BookModel> {
 
     get autors(): List<string> {
         return this.get('autors');
+    }
+
+    dowolna(): string {
+        return 'dowolna wartosc';
     }
 }
 
