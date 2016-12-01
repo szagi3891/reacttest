@@ -1,6 +1,7 @@
 /* @flow */
 //import autobind from 'autobind-decorator';
-import React, { PureComponent } from 'react';
+import React from 'react';
+import PureComponent from './PureComponent';
 import UserModel from './Models/UserModel';
 import BookModel from './Models/BookModel';
 import { List} from 'immutable';

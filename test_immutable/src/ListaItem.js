@@ -1,5 +1,6 @@
 /* @flow */
-import React, { PureComponent } from 'react';
+import React from 'react';
+import PureComponent from './PureComponent';
 import UserModel from './Models/UserModel';
 
 type PropsType = {|
