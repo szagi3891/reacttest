@@ -2,3 +2,30 @@ https://github.com/mobxjs/mobx/blob/gh-pages/docs/best/react.md
 
 https://egghead.io/technologies/rx
 
+
+
+https://github.com/garbles/react-observable-subscribe2
+
+import {render} from 'react-dom'
+import {Subscribe} from 'react-observable-subscribe2'
+import {Observable} from 'rxjs/Observable'
+import {BehaviorSubject} from 'rxjs/BehaviorSubject'
+
+const message$ = Observable.of(`Welcome`)
+const name$ = new BehaviorSubject(`Gabe`)
+
+render (
+  <Subscribe message={message$} name={name$}>
+    {props =>
+      <span>{props.message}, {props.name}</span>
+    }
+  </Subscribe>,
+  document.querySelector('#app')
+)
+
+
+
+https://gist.github.com/zxbodya/20c63681d45a049df3fc
+server side rendering
+
+
