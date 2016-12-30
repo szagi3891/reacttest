@@ -1,0 +1,30 @@
+var subject = new Rx.ReplaySubject(1);      //bufor na jedną wartość z przeszłości
+
+var subject = new Rx.ReplaySubject(2, 1000);
+            przechowuje dwie ostatnie wartości z przeszłości
+            pod warunkiem że nie są one starsze niż 1s
+            
+            
+
+var subject = new Rx.AsyncSubject();
+
+
+/*
+    ----1---2---3--|
+    ...............3|           subskrybent1
+                        3|      subskrybent2
+*/
+
+zapamiętuje wynik, zwraca ostatnią wartość ze strumienia jeśli tej jest zakończony
+    lekkie podobieństwo do Promise
+    
+    
+
+
+
+
+inne
+redux saga
+http://www.robinwieruch.de/redux-observable-rxjs/
+
+
