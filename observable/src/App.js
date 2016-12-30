@@ -20,7 +20,7 @@ class App extends Component {
                 <img src={logo} className="App-logo" alt="logo" />
                 <h2>Welcome to React</h2>
             </div>
-            <div style={{marginBottom: '20px'}}>
+            <div style={{marginTop: '20px', marginBottom: '20px'}}>
                 <button onClick={this._addNew.bind(this)}>Dodaj kolejny element</button>
             </div>
             <div className="list">

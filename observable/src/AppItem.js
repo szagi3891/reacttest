@@ -12,6 +12,10 @@ class AppItem extends Component {
         };
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        return this.props.id !== nextProps.id || this.state.model !== nextState.model;
+    }
+
     componentDidMount() {
         const { id } = this.props;
         const stream = Store.getUser(id);
