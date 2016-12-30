@@ -3,3 +3,17 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.list {
+    display: flex;
+}
+
+.listLeft {
+    padding: 20px;
+    margin-right: 20px;
+    background-color: #e0e0e0;
+}
+
+.listRight {
+    padding: 20px;
+}

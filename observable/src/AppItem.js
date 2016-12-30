@@ -7,6 +7,12 @@ class AppItem extends Component {
     constructor() {
         super();
         
+                    //trzeba sprawdzać w subskrybencie czy ten komponent jest zamontowany
+        /*
+        this.setState({
+            model: null
+        });
+        */
         this.state = {
             model: null
         };

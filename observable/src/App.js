@@ -24,7 +24,12 @@ class App extends Component {
                 <button onClick={this._addNew.bind(this)}>Dodaj kolejny element</button>
             </div>
             <div className="list">
-                {this._renderList()}
+                <div className="listLeft">
+                    {this._renderList()}
+                </div>
+                <div className="listRight">
+                    {this._renderList()}
+                </div>
             </div>
         </div>
         );
