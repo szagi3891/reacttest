@@ -1,43 +1,26 @@
-import React, { Component } from 'react';
+import React from 'react';
 
+import BaseComponent from './BaseComponent';
 import Store from './Store';
 
-class AppItem extends Component {
+class AppItem extends BaseComponent {
     
     constructor() {
         super();
-        
-        this._mounted = false;
 
-                    //trzeba sprawdzać w subskrybencie czy ten komponent jest zamontowany
         this.state = {
             model: null
         };
-    }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        return this.props.id !== nextProps.id || this.state.model !== nextState.model;
-    }
-
-    componentDidMount() {
-        const { id } = this.props;
-        const stream = Store.getUser(id);
-        
-        this._mounted = true;
-        
-        this.subscription = stream.subscribe((nextModelVersion) => {
-            this.setState({
-                model: nextModelVersion
-            });
+        this.onProps((prevProps, nextProps) => {
+            if (prevProps.id !== nextProps.id) {
+                return Store.getUser(nextProps.id).subscribe((nextModel) => {
+                    this.setState({ model: nextModel })
+                });
+            }
         });
     }
 
-    componentWillUnmount() {
-        
-        this._mounted = false;
-        //TODO - trzeba odsubskrybować strumień
-    }
-    
     render() {
         const { id } = this.props;
         const { model } = this.state;

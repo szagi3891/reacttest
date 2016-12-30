@@ -29,15 +29,23 @@ class Store {
         
         const stream = new Rx.Observable(observer => {
             storeItem.observer = observer;
-        }).startWith(null);
+        }); //.startWith(null);
         
-        storeItem.subject = new Rx.Subject();
+        //storeItem.subject = new Rx.Subject();
+        storeItem.subject = new Rx.BehaviorSubject(null);
         
         stream.subscribe(storeItem.subject);
         
         this.data.set(id, storeItem);
         
-        this._makeFakeRequest(id, storeItem.observer);
+        if (id === 0) {
+            storeItem.observer.next({
+                name: 'dla zerowego dane od razu dostępne',
+                age: '999'
+            });
+        } else {
+            this._makeFakeRequest(id, storeItem.observer);
+        }
         
         return storeItem;
     }
@@ -52,12 +60,20 @@ class Store {
             const age = Math.floor(Math.random() * 100);
             
             observer.next({
-                name: `name: ${id}`,
-                age: `age: ${age}`
+                name: `franek ${id}`,
+                age: age
             });
 
         }, 4000);
+    }
+    
+    updateAge(id, newAge) {
+        const readItem = this.data.get(id);
 
+        readItem.observer.next({
+            name: '_set_',
+            age: newAge
+        });
     }
 }
 
