@@ -5,7 +5,7 @@ import './index.css';
 
 //import './example/subject';
 //import './example/behavior_subject';
-import './example/multicast';
+//import './example/multicast';
 
 ReactDOM.render(
   <App />,
