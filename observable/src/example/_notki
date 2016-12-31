@@ -19,6 +19,39 @@ zapamiętuje wynik, zwraca ostatnią wartość ze strumienia jeśli tej jest za
     lekkie podobieństwo do Promise
     
     
+flatMap
+
+const source = Rx.Observable
+    .interval(100)
+    .take(10)
+    .flatMap(x => Rx.Observable.timer(500).map(() => x))
+
+
+1.
+    - zrobić sugester
+    - z ponawianiem w przypadku błędu
+    - z keszowaniem zapytań do serwera
+2.
+    - kilka równolegle zmerdżowanych producerów za pomocą map
+
+
+<input type="checkbox" id="toggle" />
+<div id="display"></div>
+
+var source = Rx.Observable.interval(100).map(() => '.');
+
+var display = document.querySelector('#display');
+var toogle = document.querySelector('#tooggle');
+var checked = Rx.Observable.fromEvent(toogle, 'change')
+    .map(e => e.target.checked);
+
+checked.filter(x => x === true)
+    .flatMapLatest(() => source.takeUntil(checked))
+    .subscribe(x => display.innerText += x);
+
+
+var clock = Rx.Observable.interval(1000).take(10).map(x => x + 1)
+    .publish().refCount();
 
 
 /*
