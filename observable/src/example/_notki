@@ -21,6 +21,35 @@ zapamiętuje wynik, zwraca ostatnią wartość ze strumienia jeśli tej jest za
     
 
 
+/*
+    var share = Rx.Observable.interval(1000)
+    .do(x => console.log(x))
+    .multicast(new Rx.Subject())
+    .refCount();
+    
+                    odpowiednik
+    .publish()
+    .refCount();
+    
+    const unsub1 = share.subscribe((value) => ...)
+    const unsub2 = share.subscribe((value) => ...)
+    
+    .multicast(new ReplaySubject(1))
+    odpowiednik
+    .publishReplay(1)
+    
+    publishBehavior(0)
+
+    publishLast = multicast + AsyncSubject
+    
+    .share = multicast + Subject
+    
+    multicast
+        na tym operatorze ręcznie uruchamiamy metodę connect
+        odsubskrybujemy też raz
+*/
+
+
 
 
 inne
