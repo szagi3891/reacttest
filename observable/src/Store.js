@@ -5,53 +5,44 @@ class Store {
     constructor() {
         this.data = new Map();
     }
-    
+
+        //TODO - powinno zwracać obserwator wyłącznie, teraz ktoś
+        //z zewnątrz przypadkiem może wstrzyknąć nową wartość
+
     getUser(id) {
-        const storeItem = this._getItem(id);
-        return storeItem.subject;
+        const subject = this._getItem(id);
+        return subject;
     }
 
     refresh(id) {
-        const storeItem = this._getItem(id);
-        
-        this._makeFakeRequest(id, storeItem.observer);
+        const subject = this._getItem(id);
+        this._makeFakeRequest(id, subject);
     }
     
     _getItem(id) {
-        const readItem = this.data.get(id);
-        return readItem ? readItem : this._makeNewStoreItem(id);
+        const subject = this.data.get(id);
+        return subject ? subject : this._makeNewSubject(id);
     }
 
-    _makeNewStoreItem(id) {
-        const storeItem = {
-            observer: null,
-            subject: null
-        };
+    _makeNewSubject(id) {
+
+        const subject = new Rx.BehaviorSubject(null);
         
-        const stream = new Rx.Observable(observer => {
-            storeItem.observer = observer;
-        }); //.startWith(null);
-        
-        //storeItem.subject = new Rx.Subject();
-        storeItem.subject = new Rx.BehaviorSubject(null);
-        
-        stream.subscribe(storeItem.subject);
-        
-        this.data.set(id, storeItem);
+        this.data.set(id, subject);
         
         if (id === 0) {
-            storeItem.observer.next({
+            subject.next({
                 name: 'dla zerowego dane od razu dostępne',
                 age: '999'
             });
         } else {
-            this._makeFakeRequest(id, storeItem.observer);
+            this._makeFakeRequest(id, subject);
         }
         
-        return storeItem;
+        return subject;
     }
     
-    _makeFakeRequest(id, observer) {
+    _makeFakeRequest(id, subject) {
 
         console.warn(`request po ${id}`);
 
@@ -60,7 +51,7 @@ class Store {
 
             const age = Math.floor(Math.random() * 100);
             
-            observer.next({
+            subject.next({
                 name: `franek ${id}`,
                 age: age
             });
@@ -69,9 +60,9 @@ class Store {
     }
     
     updateAge(id, newAge) {
-        const readItem = this.data.get(id);
+        const subject = this.data.get(id);
 
-        readItem.observer.next({
+        subject.next({
             name: '_set_',
             age: newAge
         });
@@ -79,3 +70,11 @@ class Store {
 }
 
 export default new Store();
+
+/*
+const stream = new Rx.Observable(observer => {
+    storeItem.observer = observer;
+}); //.startWith(null);
+*/
+//storeItem.subject = new Rx.Subject();
+//stream.subscribe(storeItem.subject);
