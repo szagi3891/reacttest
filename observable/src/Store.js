@@ -6,12 +6,9 @@ class Store {
         this.data = new Map();
     }
 
-        //TODO - powinno zwracać obserwator wyłącznie, teraz ktoś
-        //z zewnątrz przypadkiem może wstrzyknąć nową wartość
-
     getUser(id) {
-        const subject = this._getItem(id);
-        return subject;
+        const subject = this._getItem(id);        
+        return Rx.Observable.from(subject);
     }
 
     refresh(id) {
