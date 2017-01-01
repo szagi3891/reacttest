@@ -27,14 +27,6 @@ const source = Rx.Observable
     .flatMap(x => Rx.Observable.timer(500).map(() => x))
 
 
-1.
-    - zrobić sugester
-    - z ponawianiem w przypadku błędu
-    - z keszowaniem zapytań do serwera
-2.
-    - kilka równolegle zmerdżowanych producerów za pomocą map
-
-
 <input type="checkbox" id="toggle" />
 <div id="display"></div>
 
@@ -89,4 +81,7 @@ inne
 redux saga
 http://www.robinwieruch.de/redux-observable-rxjs/
 
+
+wszystko jest strumieniem - nawet propsy
+https://www.npmjs.com/package/yolk
 

@@ -17,3 +17,11 @@ body {
 .listRight {
     padding: 20px;
 }
+
+.suggesterContainer {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    margin: 20px auto;
+    border: 1px solid #e0e0e0;
+}
