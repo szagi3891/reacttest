@@ -16,10 +16,13 @@ class StoreApi {
 
     getListByText(text) {
         //const stream = this.list.get(text);
-        
+        console.warn('suggester request po: ' + text);
+
         return new Rx.Observable(observer => {
             
             setTimeout(() => {
+                console.warn('suggester response z: ' + text);
+
                 observer.next([text].concat([text], [text], [text]));
             }, 1000);
         });
@@ -41,6 +44,7 @@ class Suggester extends BaseComponent {
         this.input$.subscribe(mess => console.warn('kliknięto ' + mess));
 
         this.input$
+            .debounceTime(1000)
             .switchMap(text => storeApi.getListByText(text))
             .subscribe(list => {
                 console.warn('otrzymano nową listę: ', list);
