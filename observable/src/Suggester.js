@@ -1,3 +1,4 @@
+/* @flow */
 import React from 'react';
 import Rx from 'rxjs';
 
@@ -10,6 +11,8 @@ import BaseComponent from './BaseComponent';
 
 class StoreApi {
 
+    list: Map<>;
+
     constructor() {
         this.list = new Map();
     }
@@ -19,7 +22,7 @@ class StoreApi {
         console.warn('suggester request po: ' + text);
 
         return new Rx.Observable(observer => {
-            
+
             setTimeout(() => {
                 console.warn('suggester response z: ' + text);
 
@@ -30,17 +33,17 @@ class StoreApi {
 }
 
 class Suggester extends BaseComponent {
-    
+
     constructor() {
         super();
-        
+
         const storeApi = new StoreApi();
 
         this.input$ = new Rx.Subject();
         this.state = {
             list: []
         };
-        
+
         this.input$.subscribe(mess => console.warn('kliknięto ' + mess));
 
         this.input$
@@ -52,12 +55,12 @@ class Suggester extends BaseComponent {
             });
     }
 
-    _onChange(e) {
+    _onChange(e: Object) {
         this.input$.next(e.target.value);
     }
 
     render() {
-        
+
         return (
             <div className="suggesterContainer">
 

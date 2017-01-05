@@ -1,12 +1,15 @@
+/* @flow */
 import React, { Component } from 'react';
 
 import Store from './Store';
 
 class AppItem extends Component {
-    
+
+    _mounted: bool;
+
     constructor() {
         super();
-        
+
         this._mounted = false;
 
                     //trzeba sprawdzać w subskrybencie czy ten komponent jest zamontowany
@@ -22,9 +25,9 @@ class AppItem extends Component {
     componentDidMount() {
         const { id } = this.props;
         const stream = Store.getUser(id);
-        
+
         this._mounted = true;
-        
+
         this.subscription = stream.subscribe((nextModelVersion) => {
             this.setState({
                 model: nextModelVersion
@@ -33,15 +36,15 @@ class AppItem extends Component {
     }
 
     componentWillUnmount() {
-        
+
         this._mounted = false;
         //TODO - trzeba odsubskrybować strumień
     }
-    
+
     render() {
         const { id } = this.props;
         const { model } = this.state;
-        
+
         console.info(`RENDER ITEM: ${id}`);
 
         if (model) {

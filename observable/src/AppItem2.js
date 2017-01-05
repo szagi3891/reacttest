@@ -1,10 +1,11 @@
+/* @flow */
 import React from 'react';
 
 import BaseComponent from './BaseComponent';
 import Store from './Store';
 
 class AppItem extends BaseComponent {
-    
+
     constructor() {
         super();
 
@@ -24,7 +25,7 @@ class AppItem extends BaseComponent {
     render() {
         const { id } = this.props;
         const { model } = this.state;
-        
+
         console.info(`RENDER ITEM: ${id}`);
 
         if (model) {

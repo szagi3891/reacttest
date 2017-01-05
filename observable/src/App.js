@@ -1,3 +1,4 @@
+/* @flow */
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import AppItem2 from './AppItem2';
@@ -5,8 +6,14 @@ import './App.css';
 import Store from './Store';
 import Suggester from './Suggester';
 
+type StateType = {
+    list: Array<number>
+};
+
 class App extends Component {
-    
+
+    state: StateType;
+
     constructor() {
         super();
 
@@ -14,7 +21,7 @@ class App extends Component {
             list: [0,1,2,3,4]
         };
     }
-    
+
     render() {
         return (
             <div className="App">
@@ -34,12 +41,12 @@ class App extends Component {
                         {this._renderList()}
                     </div>
                 </div>
-                
+
                 <Suggester />
             </div>
         );
     }
-  
+
     _addNew() {
         const { list } = this.state;
         this.setState({

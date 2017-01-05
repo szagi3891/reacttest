@@ -1,22 +1,30 @@
+/* @flow */
 import Rx from 'rxjs';
 
+type ItemType = {
+    name: string,
+    age: string,
+};
+
 class Store {
+
+    data: Map<string, ItemType>;
 
     constructor() {
         this.data = new Map();
     }
 
-    getUser(id) {
-        const subject = this._getItem(id);        
+    getUser(id: string) {
+        const subject = this._getItem(id);
         return Rx.Observable.from(subject);
     }
 
-    refresh(id) {
+    refresh(id: string) {
         const subject = this._getItem(id);
         this._makeFakeRequest(id, subject);
     }
-    
-    _getItem(id) {
+
+    _getItem(id: string): ItemType {
         const subject = this.data.get(id);
         return subject ? subject : this._makeNewSubject(id);
     }
@@ -24,9 +32,9 @@ class Store {
     _makeNewSubject(id) {
 
         const subject = new Rx.BehaviorSubject(null);
-        
+
         this.data.set(id, subject);
-        
+
         if (id === 0) {
             subject.next({
                 name: 'dla zerowego dane od razu dostępne',
@@ -35,11 +43,11 @@ class Store {
         } else {
             this._makeFakeRequest(id, subject);
         }
-        
+
         return subject;
     }
-    
-    _makeFakeRequest(id, subject) {
+
+    _makeFakeRequest(id: string, subject: string) {
 
         console.warn(`request po ${id}`);
 
@@ -47,7 +55,7 @@ class Store {
             console.warn(`response z ${id}`);
 
             const age = Math.floor(Math.random() * 100);
-            
+
             subject.next({
                 name: `franek ${id}`,
                 age: age
@@ -55,8 +63,8 @@ class Store {
 
         }, 4000);
     }
-    
-    updateAge(id, newAge) {
+
+    updateAge(id: string, newAge: string) {
         const subject = this.data.get(id);
 
         subject.next({

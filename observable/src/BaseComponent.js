@@ -1,8 +1,9 @@
+/* @flow */
 import { Component } from 'react';
 import Immutable from 'immutable';
 
 class BaseComponent extends Component {
-    
+
     constructor(props) {
         super(props);
 
@@ -22,12 +23,12 @@ class BaseComponent extends Component {
     componentWillMount() {
         this._execOnProps({}, this.props);
     }
-    
+
     componentWillReceiveProps(nextProps) {
         this._execOnProps(this.props, nextProps);
     }
 
-    componentWillUnmount() {    
+    componentWillUnmount() {
         if (this._onPropsList) {
             this._onPropsList.forEach(item => {
                 if (item.sub) {
@@ -78,7 +79,7 @@ class BaseComponent extends Component {
         if (oldKeys.length !== newKeys.length) {
             return false;
         }
-        
+
         for (let i = 0; i < oldKeys.length; i++) {
             const oldData = oldObj[oldKeys[i]];
             const newData = newObj[newKeys[i]];
@@ -93,4 +94,3 @@ class BaseComponent extends Component {
 }
 
 export default BaseComponent;
-
