@@ -3,12 +3,28 @@ import React, { Component } from 'react';
 
 import Store from './Store';
 
+type ItemType = {
+    name: string,
+    age: string,
+};
+
+type StateType = {
+    model: ItemType | null
+};
+
+type PropsType = {
+    id: string
+};
+
 class AppItem extends Component {
 
+    props: PropsType;
+    state: StateType;
     _mounted: bool;
+    subscription: rxjs$Subscription;
 
-    constructor() {
-        super();
+    constructor(props: PropsType) {
+        super(props);
 
         this._mounted = false;
 
@@ -18,7 +34,7 @@ class AppItem extends Component {
         };
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
+    shouldComponentUpdate(nextProps: PropsType, nextState: StateType) {
         return this.props.id !== nextProps.id || this.state.model !== nextState.model;
     }
 

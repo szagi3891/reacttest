@@ -7,7 +7,7 @@ import Store from './Store';
 import Suggester from './Suggester';
 
 type StateType = {
-    list: Array<number>
+    list: Array<string>
 };
 
 class App extends Component {
@@ -18,7 +18,7 @@ class App extends Component {
         super();
 
         this.state = {
-            list: [0,1,2,3,4]
+            list: ['0','1','2','3','4']
         };
     }
 
@@ -50,12 +50,12 @@ class App extends Component {
     _addNew() {
         const { list } = this.state;
         this.setState({
-            list: list.concat([list.length])
+            list: list.concat([list.length.toString()])
         });
     }
 
     _update() {
-        Store.updateAge(2, 444);
+        Store.updateAge('2', '444');
     }
 
     _renderList() {

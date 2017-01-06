@@ -8,7 +8,7 @@ type ItemType = {
 
 class Store {
 
-    data: Map<string, ItemType>;
+    data: Map<string, rxjs$BehaviorSubject<ItemType|null>>;
 
     constructor() {
         this.data = new Map();
@@ -16,7 +16,7 @@ class Store {
 
     getUser(id: string) {
         const subject = this._getItem(id);
-        return Rx.Observable.from(subject);
+        return subject.asObservable();
     }
 
     refresh(id: string) {
@@ -24,12 +24,12 @@ class Store {
         this._makeFakeRequest(id, subject);
     }
 
-    _getItem(id: string): ItemType {
+    _getItem(id: string): rxjs$BehaviorSubject<ItemType|null> {
         const subject = this.data.get(id);
         return subject ? subject : this._makeNewSubject(id);
     }
 
-    _makeNewSubject(id) {
+    _makeNewSubject(id: string) {
 
         const subject = new Rx.BehaviorSubject(null);
 
@@ -47,7 +47,7 @@ class Store {
         return subject;
     }
 
-    _makeFakeRequest(id: string, subject: string) {
+    _makeFakeRequest(id: string, subject: rxjs$BehaviorSubject<ItemType|null>) {
 
         console.warn(`request po ${id}`);
 
@@ -58,7 +58,7 @@ class Store {
 
             subject.next({
                 name: `franek ${id}`,
-                age: age
+                age: age.toString()
             });
 
         }, 4000);
@@ -67,10 +67,12 @@ class Store {
     updateAge(id: string, newAge: string) {
         const subject = this.data.get(id);
 
-        subject.next({
-            name: '_set_',
-            age: newAge
-        });
+        if (subject) {
+            subject.next({
+                name: '_set_',
+                age: newAge
+            });
+        }
     }
 }
 

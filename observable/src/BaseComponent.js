@@ -1,6 +1,6 @@
-/* @flow */
+
 import { Component } from 'react';
-import Immutable from 'immutable';
+import { is as immutableIs} from 'immutable';
 
 class BaseComponent extends Component {
 
@@ -84,7 +84,7 @@ class BaseComponent extends Component {
             const oldData = oldObj[oldKeys[i]];
             const newData = newObj[newKeys[i]];
 
-            if (!Immutable.is(oldData, newData)) {
+            if (!immutableIs(oldData, newData)) {
                 return false;
             }
         }
