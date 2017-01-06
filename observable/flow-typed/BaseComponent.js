@@ -3,9 +3,6 @@ declare class Rx$BaseComponent<DefaultProps, Props, State> extends React$Compone
   static defaultProps: $Abstract<DefaultProps>;
   props: Props;
   state: $Abstract<State>;
-
-  //listenTo(listenable: Object | Function, callback: Function | string, defaultCallback?: Function | string): void;
-  //listenToMany(listenables: Object): void;
 }
 
 declare module 'src/BaseComponent' {
