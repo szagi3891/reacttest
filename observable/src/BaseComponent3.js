@@ -19,8 +19,8 @@ class BaseComponent3<DefaultPropsType, PropsType, StateType> extends Component<D
         this._subscribeList = [];
     }
 
-    onProps(callback: (subject: rxjs$Subject<PropsType>) => rxjs$Subscription) {
-        this._subscribeList.push(callback(this._propsSubject));
+    onProps(callback: (propsStream: rxjs$Observable<PropsType>) => rxjs$Subscription) {
+        this._subscribeList.push(callback(this._propsSubject.asObservable()));
     }
 
     componentWillMount() {

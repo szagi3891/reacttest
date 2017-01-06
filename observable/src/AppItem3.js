@@ -29,7 +29,7 @@ class AppItem extends BaseComponent3 {
             model: null
         };
 
-        this.onProps((propsStream: rxjs$Subject<PropsType>): rxjs$Subscription =>
+        this.onProps((propsStream: rxjs$Observable<PropsType>): rxjs$Subscription =>
             propsStream
                 .map(props => props.id)
                 .distinctUntilChanged()
