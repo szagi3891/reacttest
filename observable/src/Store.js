@@ -35,7 +35,7 @@ class Store {
 
         this.data.set(id, subject);
 
-        if (id === 0) {
+        if (id === '0') {
             subject.next({
                 name: 'dla zerowego dane od razu dostępne',
                 age: '999'
@@ -77,11 +77,3 @@ class Store {
 }
 
 export default new Store();
-
-/*
-const stream = new Rx.Observable(observer => {
-    storeItem.observer = observer;
-}); //.startWith(null);
-*/
-//storeItem.subject = new Rx.Subject();
-//stream.subscribe(storeItem.subject);

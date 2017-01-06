@@ -1,25 +1,41 @@
 /* @flow */
 import React from 'react';
 
-import BaseComponent from './BaseComponent';
+import BaseComponent3 from './BaseComponent3';
 import Store from './Store';
 
-class AppItem extends BaseComponent {
+type PropsType = {|
+    id: string
+|};
 
-    constructor() {
-        super();
+type ItemType = {
+    name: string,
+    age: string,
+};
+
+type StateType = {|
+    model: ItemType | null,
+|};
+
+class AppItem extends BaseComponent3 {
+
+    props: PropsType;
+    state: StateType;
+
+    constructor(props: PropsType) {
+        super(props);
 
         this.state = {
             model: null
         };
 
-        this.onProps((prevProps, nextProps) => {
-            if (prevProps.id !== nextProps.id) {
-                return Store.getUser(nextProps.id).subscribe((nextModel) => {
-                    this.setState({ model: nextModel })
-                });
-            }
-        });
+        this.onProps((propsStream: rxjs$Subject<PropsType>): rxjs$Subscription =>
+            propsStream
+                .map(props => props.id)
+                .distinctUntilChanged()
+                .switchMap(id => Store.getUser(id))
+                .subscribe((nextModel) => this.setState({ model: nextModel }))
+        );
     }
 
     render() {

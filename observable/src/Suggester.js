@@ -2,7 +2,7 @@
 import React from 'react';
 import Rx from 'rxjs';
 
-import BaseComponent from './BaseComponent';
+import BaseComponent3 from './BaseComponent3';
 
 /*
     TODO z ponawianiem w przypadku błędu
@@ -32,10 +32,19 @@ class StoreApi {
     }
 }
 
-class Suggester extends BaseComponent {
+type StateType = {
+    list: Array<string>
+};
 
-    constructor() {
-        super();
+class Suggester extends BaseComponent3 {
+
+    props: {};
+    state: StateType;
+
+    input$: rxjs$Subject<string>;
+
+    constructor(props: {}) {
+        super(props);
 
         const storeApi = new StoreApi();
 
