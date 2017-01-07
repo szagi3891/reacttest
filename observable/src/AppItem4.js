@@ -1,0 +1,63 @@
+/* @flow */
+import React from 'react';
+
+import BaseComponent4 from './BaseComponent4';
+import Store from './Store';
+import AppItem4Inner from './AppItem4Inner';
+
+type PropsType = {|
+    id: string
+|};
+
+type ItemType = {
+    name: string,
+    age: string,
+};
+
+type StateType = {|
+    model: ItemType | null,
+|};
+
+class AppItem4 extends BaseComponent4 {
+
+    props: PropsType;
+    state: StateType;
+
+    ff = 32;
+
+    constructor(props: PropsType) {
+        super(props);
+
+        this.state = {
+            model: null
+        };
+/*
+        setTimeout(() => {
+            this.ff = 33;
+            console.warn('przestawiam zmienną ff');
+            setTimeout(() => {
+                this.forceUpdate();
+            }, 6000);
+        }, 3000);
+*/
+        this.onProps((props$: rxjs$Observable<PropsType>): rxjs$Subscription => {
+            const user$ = props$
+                .map(props => props.id)
+                .distinctUntilChanged()
+                .switchMap(id => Store.getUser(id));
+
+            return user$.subscribe((nextModel) => this.setState({ model: nextModel }));
+        });
+    }
+
+    render() {
+        const { id } = this.props;
+        const { model } = this.state;
+
+        console.info(`RENDER item: ${id} ${this.ff} ff`);
+
+        return <AppItem4Inner id={id} model={model} />;
+    }
+}
+
+export default AppItem4;

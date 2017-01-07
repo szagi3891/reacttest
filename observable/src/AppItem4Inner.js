@@ -4,43 +4,22 @@ import React from 'react';
 import BaseComponent3 from './BaseComponent3';
 import Store from './Store';
 
-type PropsType = {|
-    id: string
-|};
-
 type ItemType = {
     name: string,
     age: string,
 };
 
-type StateType = {|
+type PropsType = {|
+    id: string,
     model: ItemType | null,
 |};
 
-class AppItem3 extends BaseComponent3 {
+class AppItem4Inner extends BaseComponent3 {
 
     props: PropsType;
-    state: StateType;
-
-    constructor(props: PropsType) {
-        super(props);
-
-        this.state = {
-            model: null
-        };
-
-        this.onProps((propsStream: rxjs$Observable<PropsType>): rxjs$Subscription =>
-            propsStream
-                .map(props => props.id)
-                .distinctUntilChanged()
-                .switchMap(id => Store.getUser(id))
-                .subscribe((nextModel) => this.setState({ model: nextModel }))
-        );
-    }
 
     render() {
-        const { id } = this.props;
-        const { model } = this.state;
+        const { id, model } = this.props;
 
         console.info(`RENDER ITEM: ${id}`);
 
@@ -65,4 +44,4 @@ class AppItem3 extends BaseComponent3 {
     }
 }
 
-export default AppItem3;
+export default AppItem4Inner;
