@@ -17,8 +17,7 @@ class StoreApi {
         this.list = new Map();
     }
 
-    getListByText(text) {
-        //const stream = this.list.get(text);
+    getListByText(text): rxjs$Observable<Array<string>> {
         console.warn('suggester request po: ' + text);
 
         return new Rx.Observable(observer => {
