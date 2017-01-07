@@ -42,7 +42,7 @@ function createRxComponent(mapProps, SimpleComponent) {
     }
 
     componentWillReceiveProps(nextProps, /*, nextContext*/) {
-      this.receive$(nextProps);
+      this.receive$.next(nextProps);
     }
 
     //shouldComponentUpdate = shouldPureComponentUpdate;
