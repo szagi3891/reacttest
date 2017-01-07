@@ -15,3 +15,17 @@ result.subscribe(
     err => console.log(`error ${e}`)
     () => console.log('done')
 );
+
+
+                              //zawsze ponawia
+const result = bar.retry();
+
+                              //gdy wystąpi błąd, czekaj sekundę i ponawiaj
+const result = bar.retryWhen(errObs => errObs.delay(1000));
+
+
+                              //zapętla powtarzanie sekwencji
+const result = bar.repeat();
+
+                              //powtarzaj 3 razy
+const result = bar.repeat(3);
