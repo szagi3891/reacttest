@@ -1,5 +1,5 @@
-
-import React, { Component } from 'react';
+// @flow
+import { Component, createElement } from 'react';
 import Rx from 'rxjs';
 import { is as immutableIs} from 'immutable';
 
@@ -9,11 +9,13 @@ const _shoudUpdate = (oldObj: mixed, newObj: mixed): bool => {
     }
 
     if (typeof newObj !== 'object' || typeof oldObj !== 'object') {
+        console.warn('newObj', newObj);
+        console.warn('oldObj', oldObj);
         throw Error('incorrect state');
     }
 
     if (newObj === null || oldObj === null) {
-        throw Error('incorrect state');
+        return true;
     }
 
     const oldKeys = Object.keys(newObj);
@@ -53,20 +55,24 @@ function shouldComponentUpdate(nextProps: mixed, nextState: mixed): bool {
 type MapFuncType = (obser: Rx.Observable<PropsType1>) => Rx.Observable<PropsType2>
 type ComponentIn = Component<*,*,*>;
 type ComponentOut = Component<*,*,*>;
-
-//function createRxComponent<PropsTypeIn, PropsTypeOut>(mapProps: MapFuncType, SimpleComponent: ComponentOut): ComponentIn {
 */
-function createRxComponent(mapProps, SimpleComponent) {
+
+type MapFuncType<PropsTypeIn, PropsTypeOut> = (observable: Rx.Observable<PropsTypeIn>) => Rx.Observable<PropsTypeOut>;
+
+function createRxComponent<PropsTypeIn, PropsTypeOut>(mapProps: MapFuncType<PropsTypeIn, PropsTypeOut>, SimpleComponent: any): any {
+
+//function createRxComponent(mapProps, SimpleComponent) {
 
     class RxComponent extends Component {
 
+        state: PropsTypeOut;
         shouldComponentUpdate = shouldComponentUpdate;
-/*
-        shouldComponentUpdate(nextProps: mixed, nextState: mixed): bool {
-            return _shoudUpdate(this.props, nextProps) || _shoudUpdate(this.state, nextState);
-        }
-*/
-        constructor(props/*, context*/) {
+
+        componentHasMounted: bool;
+        receive$: rxjs$Subject<PropsTypeIn>;
+        subscription: rxjs$Subscription;
+
+        constructor(props: PropsTypeIn/*, context*/) {
             super(props/*, context*/);
 
             //this.receive$ = funcSubject();
@@ -76,10 +82,10 @@ function createRxComponent(mapProps, SimpleComponent) {
             this.componentHasMounted = false;
 
             this.receive$ = new Rx.Subject();
-            this.props$ = this.receive$.startWith(props);
+            const props$ = this.receive$.startWith(props);
 
-            this.subscription = mapProps(this.props$).subscribe(
-                childProps =>
+            this.subscription = mapProps(props$).subscribe(
+                (childProps: PropsTypeOut) =>
                     this.componentHasMounted
                         ? this.setState(childProps)
                         : this.state = childProps
@@ -90,7 +96,7 @@ function createRxComponent(mapProps, SimpleComponent) {
             this.componentHasMounted = true;
         }
 
-        componentWillReceiveProps(nextProps, /*, nextContext*/) {
+        componentWillReceiveProps(nextProps: PropsTypeIn, /*, nextContext*/) {
             this.receive$.next(nextProps);
         }
 
@@ -99,7 +105,8 @@ function createRxComponent(mapProps, SimpleComponent) {
         }
 
         render() {
-            return <SimpleComponent {...this.state} />;
+            return createElement(SimpleComponent, this.state);
+            //return <SimpleComponent {...this.state} />;
         }
     };
 

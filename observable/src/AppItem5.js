@@ -20,10 +20,15 @@ const mapToProps5 = (props$) => {
         .map(props => props.id)
         .distinctUntilChanged()
         .switchMap(id => Store.getUser(id));
+/*
+    const timer$ = Rx.Observable.interval(1000)
+          .map(i => i % 2).startWith(true);
+*/
 
     return Rx.Observable.combineLatest(props$, model$, (props, model) => ({
       ...props,
       model
+      //timerOdd
     }));
 };
 
