@@ -1,6 +1,43 @@
 
 import React, { Component } from 'react';
 import Rx from 'rxjs';
+import { is as immutableIs} from 'immutable';
+
+const _shoudUpdate = (oldObj: mixed, newObj: mixed): bool => {
+    if (oldObj === newObj) {
+        return false;
+    }
+
+    if (typeof newObj !== 'object' || typeof oldObj !== 'object') {
+        throw Error('incorrect state');
+    }
+
+    if (newObj === null || oldObj === null) {
+        throw Error('incorrect state');
+    }
+
+    const oldKeys = Object.keys(newObj);
+    const newKeys = Object.keys(oldObj);
+
+    if (oldKeys.length !== newKeys.length) {
+        return true;
+    }
+
+    for (let i = 0; i < oldKeys.length; i++) {
+        const oldData = oldObj[oldKeys[i]];
+        const newData = newObj[newKeys[i]];
+
+        if (!immutableIs(oldData, newData)) {
+            return true;
+        }
+    }
+
+    return false;
+};
+
+function shouldComponentUpdate(nextProps: mixed, nextState: mixed): bool {
+    return _shoudUpdate(this.props, nextProps) || _shoudUpdate(this.state, nextState);
+};
 
 /*
     wzorowane na :
@@ -17,11 +54,18 @@ type MapFuncType = (obser: Rx.Observable<PropsType1>) => Rx.Observable<PropsType
 type ComponentIn = Component<*,*,*>;
 type ComponentOut = Component<*,*,*>;
 
-//function createRxComponent<PropsType1, PropsType2>(mapProps: MapFuncType, SimpleComponent: ComponentIn): ComponentOut {
+//function createRxComponent<PropsTypeIn, PropsTypeOut>(mapProps: MapFuncType, SimpleComponent: ComponentOut): ComponentIn {
 */
 function createRxComponent(mapProps, SimpleComponent) {
 
     class RxComponent extends Component {
+
+        shouldComponentUpdate = shouldComponentUpdate;
+/*
+        shouldComponentUpdate(nextProps: mixed, nextState: mixed): bool {
+            return _shoudUpdate(this.props, nextProps) || _shoudUpdate(this.state, nextState);
+        }
+*/
         constructor(props/*, context*/) {
             super(props/*, context*/);
 
@@ -50,8 +94,6 @@ function createRxComponent(mapProps, SimpleComponent) {
             this.receive$.next(nextProps);
         }
 
-        //shouldComponentUpdate = shouldPureComponentUpdate;
-
         componentWillUnmount() {
             this.subscription.unsubscribe();
         }
@@ -65,5 +107,6 @@ function createRxComponent(mapProps, SimpleComponent) {
 }
 
 export {
-    createRxComponent
+    createRxComponent,
+    shouldComponentUpdate
 };

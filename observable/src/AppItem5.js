@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import Rx from 'rxjs';
 
-import { createRxComponent } from './Base5';
+import { createRxComponent, shouldComponentUpdate } from './Base5';
 import Store from './Store';
 
 type ItemType = {
@@ -21,8 +21,6 @@ const mapToProps5 = (props$) => {
         .distinctUntilChanged()
         .switchMap(id => Store.getUser(id));
 
-    //przenieść tutaj refresh ??
-
     return Rx.Observable.combineLatest(props$, model$, (props, model) => ({
       ...props,
       model
@@ -30,6 +28,8 @@ const mapToProps5 = (props$) => {
 };
 
 class AppItem5 extends Component {
+
+    shouldComponentUpdate = shouldComponentUpdate;
 
     props: PropsType;
 
