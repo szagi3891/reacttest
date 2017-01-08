@@ -61,7 +61,7 @@ class App extends Component {
     _renderList() {
         const { list } = this.state;
 
-        return list.map((itemId) => <AppItem5 key={itemId} id={itemId} />);
+        return list.map((itemId) => <AppItem5 key={itemId} id={itemId} model="Dadas" />);
     }
 }
 

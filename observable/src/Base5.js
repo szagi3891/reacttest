@@ -2,7 +2,7 @@
 import { Component, createElement } from 'react';
 import Rx from 'rxjs';
 import { is as immutableIs} from 'immutable';
-
+/*
 const _shoudUpdate = (oldObj: mixed, newObj: mixed): bool => {
     if (oldObj === newObj) {
         return false;
@@ -40,6 +40,7 @@ const _shoudUpdate = (oldObj: mixed, newObj: mixed): bool => {
 function shouldComponentUpdate(nextProps: mixed, nextState: mixed): bool {
     return _shoudUpdate(this.props, nextProps) || _shoudUpdate(this.state, nextState);
 };
+*/
 
 /*
     wzorowane na :
@@ -51,52 +52,55 @@ function shouldComponentUpdate(nextProps: mixed, nextState: mixed): bool {
     TODO - obsłużyć kontekst ?
 */
 
-/*
-type MapFuncType = (obser: Rx.Observable<PropsType1>) => Rx.Observable<PropsType2>
-type ComponentIn = Component<*,*,*>;
-type ComponentOut = Component<*,*,*>;
-*/
-
 type MapFuncType<PropsTypeIn, PropsTypeOut> = (observable: Rx.Observable<PropsTypeIn>) => Rx.Observable<PropsTypeOut>;
 
-function createRxComponent<PropsTypeIn, PropsTypeOut>(mapProps: MapFuncType<PropsTypeIn, PropsTypeOut>, SimpleComponent: any): any {
+function createRxComponent<PropsTypeIn, PropsTypeOut>(
+    mapProps: MapFuncType<PropsTypeIn,PropsTypeOut>,
+    innerComponent: ReactClass<PropsTypeOut>
+): ReactClass<PropsTypeIn> {
 
-//function createRxComponent(mapProps, SimpleComponent) {
+
+/*
+function createRxComponent<PropsTypeIn, PropsTypeOut>(
+    mapProps: MapFuncType<PropsTypeIn,PropsTypeOut>,
+    innerComponent: React$Component<any, PropsTypeOut, any>
+): React$Component<any, PropsTypeIn, PropsTypeOut> {
+*/
 
     class RxComponent extends Component {
+        props: PropsTypeIn;
 
-        state: PropsTypeOut;
-        shouldComponentUpdate = shouldComponentUpdate;
+        innerProps: PropsTypeOut;
 
-        componentHasMounted: bool;
+        //componentHasMounted: bool;
         receive$: rxjs$Subject<PropsTypeIn>;
         subscription: rxjs$Subscription;
 
-        constructor(props: PropsTypeIn/*, context*/) {
-            super(props/*, context*/);
+        //shouldComponentUpdate = shouldComponentUpdate;
 
-            //this.receive$ = funcSubject();
-            //this.props$ = this.receive$.map(x => x[0]).startWith(props);
-            //this.context$ = this.receive$.map(x => x[1]).startWith(context);
-
-            this.componentHasMounted = false;
+        constructor(props: PropsTypeIn) {
+            super(props);
 
             this.receive$ = new Rx.Subject();
-            const props$ = this.receive$.startWith(props);
+            const props$ = this.receive$;   //.startWith(props);
 
-            this.subscription = mapProps(props$).subscribe(
-                (childProps: PropsTypeOut) =>
-                    this.componentHasMounted
-                        ? this.setState(childProps)
-                        : this.state = childProps
-            );
+            this.subscription = mapProps(props$)
+                .subscribe((newInnerProps: PropsTypeOut) => {
+                    this.innerProps = newInnerProps;
+                    this.forceUpdate();
+                });
         }
-
+/*
+        shouldComponentUpdate() {
+            return false;
+        }
+*/
         componentDidMount() {
-            this.componentHasMounted = true;
+            //this.componentHasMounted = true;
+            this.receive$.next(this.props);
         }
 
-        componentWillReceiveProps(nextProps: PropsTypeIn, /*, nextContext*/) {
+        componentWillReceiveProps(nextProps: PropsTypeIn) {
             this.receive$.next(nextProps);
         }
 
@@ -105,8 +109,7 @@ function createRxComponent<PropsTypeIn, PropsTypeOut>(mapProps: MapFuncType<Prop
         }
 
         render() {
-            return createElement(SimpleComponent, this.state);
-            //return <SimpleComponent {...this.state} />;
+            return createElement(innerComponent, this.innerProps);
         }
     };
 
@@ -114,6 +117,6 @@ function createRxComponent<PropsTypeIn, PropsTypeOut>(mapProps: MapFuncType<Prop
 }
 
 export {
-    createRxComponent,
-    shouldComponentUpdate
+    createRxComponent
+    //shouldComponentUpdate
 };

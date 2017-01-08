@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import Rx from 'rxjs';
 
-import { createRxComponent, shouldComponentUpdate } from './Base5';
+import { createRxComponent/*, shouldComponentUpdate*/ } from './Base5';
 import Store from './Store';
 
 type ItemType = {
@@ -10,7 +10,11 @@ type ItemType = {
     age: string,
 };
 
-type PropsType = {|
+type PropsTypeIn = {|
+    id: string,
+|};
+
+type PropsTypeOut = {|
     id: string,
     model: ItemType | null,
 |};
@@ -34,9 +38,9 @@ const mapToProps5 = (props$) => {
 
 class AppItem5 extends Component {
 
-    shouldComponentUpdate = shouldComponentUpdate;
+    //shouldComponentUpdate = shouldComponentUpdate;
 
-    props: PropsType;
+    props: PropsTypeOut;
 
     render() {
         const { id, model } = this.props;
