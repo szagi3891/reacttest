@@ -253,7 +253,7 @@ declare class rxjs$Observable<+T> {
 
   toPromise(): Promise<T>;
 
-  subscribe(observer: rxjs$PartialObserver<T>): rxjs$Subscription;
+  //subscribe(observer: rxjs$PartialObserver<T>): rxjs$Subscription;
   subscribe(
     onNext: ?(value: T) => mixed,
     onError: ?(error: any) => mixed,
@@ -314,6 +314,18 @@ declare class rxjs$Observable<+T> {
     f: rxjs$Observable<F>,
     g: rxjs$Observable<G>,
     resultSelector: (a: A, b: B, c: C, d: D, e: E, f: F, g: G) => H,
+  ): rxjs$Observable<H>;
+
+  static combineLatest<A, B, C, D, E, F, G, H, I>(
+    a: rxjs$Observable<A>,
+    b: rxjs$Observable<B>,
+    c: rxjs$Observable<C>,
+    d: rxjs$Observable<D>,
+    e: rxjs$Observable<E>,
+    f: rxjs$Observable<F>,
+    g: rxjs$Observable<G>,
+    i: rxjs$Observable<I>,
+    resultSelector: (a: A, b: B, c: C, d: D, e: E, f: F, g: G, i: I) => H,
   ): rxjs$Observable<H>;
 
   static combineLatest<A, B>(

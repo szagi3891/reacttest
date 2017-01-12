@@ -1,7 +1,7 @@
 /* @flow */
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import AppItem5 from './AppItem5';
+import AppItem3 from './AppItem3';
 import './App.css';
 import Store from './Store';
 import Suggester from './Suggester';
@@ -44,7 +44,16 @@ class App extends Component {
                 </div>
 
                 <Suggester />
-                <Form />
+
+                <div style={{border: "1px solid black", padding: "20px"}}>
+                    <Form />
+                </div>
+
+                <br/>
+
+                <div style={{border: "1px solid black", padding: "20px"}}>
+                    <Form />
+                </div>
             </div>
         );
     }
@@ -63,7 +72,7 @@ class App extends Component {
     _renderList() {
         const { list } = this.state;
 
-        return list.map((itemId) => <AppItem5 key={itemId} idd={itemId} />);
+        return list.map((itemId) => <AppItem3 key={itemId} id={itemId} />);
     }
 }
 

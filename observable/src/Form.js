@@ -14,7 +14,32 @@ type StateType = {
     message2: string | null,
     message3: string | null,
     messages: Array<MessageItem>,
+    sender1: (value: SyntheticEvent) => void,
+    sender2: (value: SyntheticEvent) => void,
+    sender3: (value: SyntheticEvent) => void,
+    submit: (value: SyntheticEvent) => void,
 };
+
+//: rxjs$Subject<string | null>
+
+type SenderSubjectType<T> = {
+    send: rxjs$Observable<(value: T) => void>,
+    receive: rxjs$Observable<T>
+};
+
+function senderSubject<T>(): SenderSubjectType<T> {
+    const subject: rxjs$Subject<T> = new Rx.Subject();
+
+    const sendValue = (value: T) => {
+        subject.next(value);
+    };
+    const behaviorSubject: rxjs$BehaviorSubject<(value: T) => void> = new Rx.BehaviorSubject(sendValue);
+
+    return {
+        receive: subject.asObservable(),
+        send: behaviorSubject.asObservable()
+    };
+}
 
 class Form extends BaseComponent3 {
 
@@ -22,35 +47,26 @@ class Form extends BaseComponent3 {
     state: StateType;
     _mount: bool;
 
-    input1$: rxjs$Subject<string>;
-    input2$: rxjs$Subject<string>;
-    input3$: rxjs$Subject<string>;
-    submit$: rxjs$Subject<void>;
-
     constructor(props: {}) {
         super(props);
 
-        this.state = {
-            message1: '',
-            message2: '',
-            message3: '',
-            messages: [],
-        };
+        const sender1: SenderSubjectType<SyntheticEvent> = senderSubject();
+        const sender2: SenderSubjectType<SyntheticEvent> = senderSubject();
+        const sender3: SenderSubjectType<SyntheticEvent> = senderSubject();
+        const submit : SenderSubjectType<SyntheticEvent> = senderSubject();
 
-        this.input1$ = new Rx.Subject();
-        this.input2$ = new Rx.Subject();
-        this.input3$ = new Rx.Subject();
-        this.submit$ = new Rx.Subject();
-
-        const message1$ = this.input1$
+        const message1$: rxjs$Observable<string | null> = sender1.receive
+            .map((e: SyntheticEvent): string => e.target instanceof HTMLInputElement ? e.target.value : '')
             .startWith('')
             .map(value => value.length > 3 ? 'Podaj maksymalnie 3 znaki' : null);
 
-        const message2$ = this.input2$
+        const message2$ = sender2.receive
+            .map((e: SyntheticEvent): string => e.target instanceof HTMLInputElement ? e.target.value : '')
             .startWith('')
             .map(value => value !== 'xx' ? 'Proszę wprowadzić frazę "xx"': null);
 
-        const message3$ = this.input3$
+        const message3$ = sender3.receive
+            .map((e: SyntheticEvent): string => e.target instanceof HTMLInputElement ? e.target.value : '')
             .startWith('')
             .map(value => value !== 'rr' ? 'Proszę wprowadzić frazę "rr"': null);
 
@@ -81,24 +97,39 @@ class Form extends BaseComponent3 {
             return messages;
         }).distinctUntilChanged();
 
-        const state$ = Rx.Observable.combineLatest(
+        const combineResult = (
+            message1: string | null,
+            message2: string | null,
+            message3: string | null,
+            messages: Array<MessageItem>,
+            sender1: (value: SyntheticEvent) => void,
+            sender2: (value: SyntheticEvent) => void,
+            sender3: (value: SyntheticEvent) => void,
+            submit: (value: SyntheticEvent) => void
+        ): StateType => {
+            return {
+                message1: message1,
+                message2: message2,
+                message3: message3,
+                messages: messages,
+                sender1: sender1,
+                sender2: sender2,
+                sender3: sender3,
+                submit: submit
+            };
+        };
+
+        const state$: rxjs$Observable<StateType> = Rx.Observable.combineLatest(
             message1$,
             message2$,
             message3$,
             messages$,
-            (
-                message1,
-                message2,
-                message3,
-                messages
-            ): StateType => {
-            return {
-                message1,
-                message2,
-                message3,
-                messages
-            };
-        });
+            sender1.send,
+            sender2.send,
+            sender3.send,
+            submit.send,
+            combineResult
+        );
 
         state$.subscribe((state: StateType) => {
             if (this._mount === true) {
@@ -107,6 +138,22 @@ class Form extends BaseComponent3 {
                 this.state = state;
             }
         });
+
+/*
+        this.onProps((propsStream: rxjs$Observable<PropsType>): rxjs$Subscription =>
+            state$.subscribe((state: StateType) => this.setState(state))
+        );
+*/
+
+/*
+this.onProps((propsStream: rxjs$Observable<PropsType>): rxjs$Subscription =>
+    propsStream
+        .map(props => props.id)
+        .distinctUntilChanged()
+        .switchMap(id => Store.getUser(id))
+        .subscribe((nextModel) => this.setState({ model: nextModel }))
+);
+*/
         //.debounceTime(1000)
     }
 
@@ -118,61 +165,46 @@ class Form extends BaseComponent3 {
         this._mount = false;
     }
 
-    _onChange1(e: Object) {
-        console.warn('on change 1', this.input1$);
-        this.input1$.next(e.target.value);
-    }
-    _onChange2(e: Object) {
-        this.input2$.next(e.target.value);
-    }
-    _onChange3(e: Object) {
-        this.input3$.next(e.target.value);
-    }
-
-    _onSubmit(e: Object) {
-      this.submit$.next();
-    }
-
     render(): React.Element<*> {
-        const { message1, message2, message3, messages} = this.state;
+        const { message1, message2, message3, messages, sender1, sender2, sender3, submit} = this.state;
 
         return (
             <div className="test_form">
 
-                <input onChange={this._onChange1.bind(this)} />
+                <input onChange={sender1} />
                 { message1 ? <div style={{color: 'red'}}>{message1}</div> : null }
 
                 <br/><br/>
 
-                <input onChange={this._onChange2.bind(this)} />
+                <input onChange={sender2} />
                 { message2 ? <div style={{color: 'red'}}>{message2}</div> : null }
 
                 <br/><br/>
 
-                <input onChange={this._onChange3.bind(this)} />
+                <input onChange={sender3} />
                 { message3 ? <div style={{color: 'red'}}>{message3}</div> : null }
 
                 <br/><br/>
 
                 { messages.length > 0 ? this._showMessages(messages): null}
-                <button onClick={this._onSubmit.bind(this)}>Wyślij</button>
+                <button onClick={submit}>Wyślij</button>
             </div>
         );
     }
 
     _showMessages(messages: Array<MessageItem>): React.Element<*> {
         return (
-            <ul>
-                { messages.map(this._showMessageItem.bind(this)) }
-            </ul>
+            <div>
+                { messages.map(this._showMessageItem) }
+            </div>
         );
     }
 
     _showMessageItem(item: MessageItem): React.Element<*> {
         return (
-            <li key={item.id}>
+            <div key={item.id}>
                 {item.message}
-            </li>
+            </div>
         );
     }
 }
