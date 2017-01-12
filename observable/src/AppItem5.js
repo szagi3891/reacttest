@@ -2,8 +2,8 @@
 import React, { Component } from 'react';
 import Rx from 'rxjs';
 
-//import { createRxComponent/*, shouldComponentUpdate*/ } from './Base5';
-import { createRxComponent } from './Test';
+import { createRxComponent } from './Base5';
+//import { createRxComponent } from './Test';
 import Store from './Store';
 
 type ItemType = {
@@ -25,6 +25,8 @@ const mapToProps5 = (props$: rxjs$Observable<PropsTypeIn>): rxjs$Observable<Prop
         .map(props => props.id)
         .distinctUntilChanged()
         .switchMap(id => Store.getUser(id));
+
+        //.switchMap(id => Store.getUser(id));  ---> .switchMap(id => Store.getUser(id).map( -> model + metoda refresh ));
 /*
     const timer$ = Rx.Observable.interval(1000)
           .map(i => i % 2).startWith(true);
@@ -38,8 +40,6 @@ const mapToProps5 = (props$: rxjs$Observable<PropsTypeIn>): rxjs$Observable<Prop
 };
 
 class AppItem5 extends Component {
-
-    //shouldComponentUpdate = shouldComponentUpdate;
 
     props: PropsTypeOut;
 

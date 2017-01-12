@@ -2,7 +2,7 @@
 import React, { Component, createElement } from 'react';
 import Rx from 'rxjs';
 import { is as immutableIs} from 'immutable';
-/*
+
 const _shoudUpdate = (oldObj: mixed, newObj: mixed): bool => {
     if (oldObj === newObj) {
         return false;
@@ -40,7 +40,7 @@ const _shoudUpdate = (oldObj: mixed, newObj: mixed): bool => {
 function shouldComponentUpdate(nextProps: mixed, nextState: mixed): bool {
     return _shoudUpdate(this.props, nextProps) || _shoudUpdate(this.state, nextState);
 };
-*/
+
 
 /*
     wzorowane na :
@@ -60,16 +60,13 @@ function createRxComponent<PropsTypeIn, PropsTypeOut>(
 ): React$Component<any, PropsTypeIn, PropsTypeOut> {
 */
 
-/*
-type MapFuncType<PropsTypeIn: Object, PropsTypeOut: Object> = (observable: Rx.Observable<PropsTypeIn>) => Rx.Observable<PropsTypeOut>;
+
+type MapFuncType<PropsTypeIn, PropsTypeOut> = (observable: Rx.Observable<PropsTypeIn>) => Rx.Observable<PropsTypeOut>;
 
 export function createRxComponent<PropsTypeIn: Object, PropsTypeOut: Object>(
     mapProps: MapFuncType<PropsTypeIn,PropsTypeOut>,
-//    innerComponent: ReactClass<PropsTypeOut>
-//): ReactClass<PropsTypeIn> {
-
-    innerComponent: React.Component<*, PropsTypeOut, *>
-): React.Component<*, PropsTypeIn, *> {
+    innerComponent: (prop: PropsTypeOut) => React.Element<*>
+): (prop: PropsTypeIn) => React.Element<*> {
 
     class RxComponent extends Component {
 
@@ -115,4 +112,3 @@ export function createRxComponent<PropsTypeIn: Object, PropsTypeOut: Object>(
 
     return RxComponent;
 }
-*/
