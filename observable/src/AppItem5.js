@@ -2,7 +2,8 @@
 import React, { Component } from 'react';
 import Rx from 'rxjs';
 
-import { createRxComponent/*, shouldComponentUpdate*/ } from './Base5';
+//import { createRxComponent/*, shouldComponentUpdate*/ } from './Base5';
+import { createRxComponent } from './Test';
 import Store from './Store';
 
 type ItemType = {
@@ -10,16 +11,16 @@ type ItemType = {
     age: string,
 };
 
-type PropsTypeIn = {|
+type PropsTypeIn = {
     id: string,
-|};
+};
 
-type PropsTypeOut = {|
+type PropsTypeOut = {
     id: string,
     model: ItemType | null,
-|};
+};
 
-const mapToProps5 = (props$) => {
+const mapToProps5 = (props$: rxjs$Observable<PropsTypeIn>): rxjs$Observable<PropsTypeOut> => {
     const model$ = props$
         .map(props => props.id)
         .distinctUntilChanged()

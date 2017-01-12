@@ -1,0 +1,73 @@
+// @flow
+import React, { Component, createElement } from 'react';
+import Rx from 'rxjs';
+
+type ClassComponent<D, P, S> = Class<React$Component<D, P, S>>;
+
+type MapFuncType<PropsTypeIn, PropsTypeOut> = (observable: Rx.Observable<PropsTypeIn>) => Rx.Observable<PropsTypeOut>;
+
+export function createRxComponent<PropsTypeIn, PropsTypeOut>(
+    mapProps: MapFuncType<PropsTypeIn,PropsTypeOut>,
+/*
+    innerComponent: ReactClass<PropsTypeOut>
+): ReactClass<PropsTypeIn> {
+*/
+
+//   innerComponent: React.Component<*, PropsTypeOut, *>
+//): React.Component<*, PropsTypeIn, *> {
+
+   innerComponent: ClassComponent<*, PropsTypeOut, *>
+): ClassComponent<*, PropsTypeIn, *> {
+
+
+
+    class RxComponent extends Component {
+
+        props: PropsTypeIn;
+        innerProps: null | PropsTypeOut;
+
+        receive$: rxjs$Subject<PropsTypeIn>;
+        subscription: rxjs$Subscription;
+
+        constructor(props: PropsTypeIn) {
+            super(props);
+
+            this.receive$ = new Rx.Subject();
+            const props$ = this.receive$;   //.startWith(props);
+
+            this.innerProps = null;
+
+            this.subscription = mapProps(props$)
+                .subscribe((newInnerProps: PropsTypeOut) => {
+                    this.innerProps = newInnerProps;
+                    this.forceUpdate();
+                });
+        }
+
+        shouldComponentUpdate() {
+            return false;
+        }
+
+        componentDidMount() {
+            this.receive$.next(this.props);
+        }
+
+        componentWillReceiveProps(nextProps: PropsTypeIn) {
+            this.receive$.next(nextProps);
+        }
+
+        componentWillUnmount() {
+            this.subscription.unsubscribe();
+        }
+
+        render() {
+            if (this.innerProps === null) {
+                return null;
+            }
+
+            return createElement(innerComponent, this.innerProps);
+        }
+    };
+
+    return RxComponent;
+}

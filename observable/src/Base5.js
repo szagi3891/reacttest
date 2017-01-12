@@ -1,5 +1,5 @@
 // @flow
-import { Component, createElement } from 'react';
+import React, { Component, createElement } from 'react';
 import Rx from 'rxjs';
 import { is as immutableIs} from 'immutable';
 /*
@@ -52,13 +52,6 @@ function shouldComponentUpdate(nextProps: mixed, nextState: mixed): bool {
     TODO - obsłużyć kontekst ?
 */
 
-type MapFuncType<PropsTypeIn, PropsTypeOut> = (observable: Rx.Observable<PropsTypeIn>) => Rx.Observable<PropsTypeOut>;
-
-function createRxComponent<PropsTypeIn, PropsTypeOut>(
-    mapProps: MapFuncType<PropsTypeIn,PropsTypeOut>,
-    innerComponent: ReactClass<PropsTypeOut>
-): ReactClass<PropsTypeIn> {
-
 
 /*
 function createRxComponent<PropsTypeIn, PropsTypeOut>(
@@ -67,16 +60,24 @@ function createRxComponent<PropsTypeIn, PropsTypeOut>(
 ): React$Component<any, PropsTypeIn, PropsTypeOut> {
 */
 
-    class RxComponent extends Component {
-        props: PropsTypeIn;
+/*
+type MapFuncType<PropsTypeIn: Object, PropsTypeOut: Object> = (observable: Rx.Observable<PropsTypeIn>) => Rx.Observable<PropsTypeOut>;
 
+export function createRxComponent<PropsTypeIn: Object, PropsTypeOut: Object>(
+    mapProps: MapFuncType<PropsTypeIn,PropsTypeOut>,
+//    innerComponent: ReactClass<PropsTypeOut>
+//): ReactClass<PropsTypeIn> {
+
+    innerComponent: React.Component<*, PropsTypeOut, *>
+): React.Component<*, PropsTypeIn, *> {
+
+    class RxComponent extends Component {
+
+        props: PropsTypeIn;
         innerProps: PropsTypeOut;
 
-        //componentHasMounted: bool;
         receive$: rxjs$Subject<PropsTypeIn>;
         subscription: rxjs$Subscription;
-
-        //shouldComponentUpdate = shouldComponentUpdate;
 
         constructor(props: PropsTypeIn) {
             super(props);
@@ -90,13 +91,12 @@ function createRxComponent<PropsTypeIn, PropsTypeOut>(
                     this.forceUpdate();
                 });
         }
-/*
+
         shouldComponentUpdate() {
             return false;
         }
-*/
+
         componentDidMount() {
-            //this.componentHasMounted = true;
             this.receive$.next(this.props);
         }
 
@@ -115,8 +115,4 @@ function createRxComponent<PropsTypeIn, PropsTypeOut>(
 
     return RxComponent;
 }
-
-export {
-    createRxComponent
-    //shouldComponentUpdate
-};
+*/

@@ -5,6 +5,7 @@ import AppItem5 from './AppItem5';
 import './App.css';
 import Store from './Store';
 import Suggester from './Suggester';
+import Form from './Form';
 
 type StateType = {
     list: Array<string>
@@ -35,14 +36,15 @@ class App extends Component {
                 </div>
                 <div className="list">
                     <div className="listLeft">
-                        {this._renderList()}
+                        { this._renderList() }
                     </div>
                     <div className="listRight">
-                        {this._renderList()}
+                        { this._renderList() }
                     </div>
                 </div>
 
                 <Suggester />
+                <Form />
             </div>
         );
     }
@@ -61,7 +63,7 @@ class App extends Component {
     _renderList() {
         const { list } = this.state;
 
-        return list.map((itemId) => <AppItem5 key={itemId} id={itemId} model="Dadas" />);
+        return list.map((itemId) => <AppItem5 key={itemId} idd={itemId} />);
     }
 }
 
