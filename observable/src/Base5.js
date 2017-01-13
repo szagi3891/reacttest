@@ -1,8 +1,10 @@
 // @flow
+
 import React, { Component, createElement } from 'react';
 import Rx from 'rxjs';
-import { is as immutableIs} from 'immutable';
+//import { is as immutableIs} from 'immutable';
 
+/*
 const _shoudUpdate = (oldObj: mixed, newObj: mixed): bool => {
     if (oldObj === newObj) {
         return false;
@@ -40,7 +42,7 @@ const _shoudUpdate = (oldObj: mixed, newObj: mixed): bool => {
 function shouldComponentUpdate(nextProps: mixed, nextState: mixed): bool {
     return _shoudUpdate(this.props, nextProps) || _shoudUpdate(this.state, nextState);
 };
-
+*/
 
 /*
     wzorowane na :
@@ -63,10 +65,16 @@ function createRxComponent<PropsTypeIn, PropsTypeOut>(
 
 type MapFuncType<PropsTypeIn, PropsTypeOut> = (observable: Rx.Observable<PropsTypeIn>) => Rx.Observable<PropsTypeOut>;
 
+type FuncOutType<PropsTypeIn> = (prop: PropsTypeIn) => React.Element<*>;
+
+//concat<S, Item: Array<S> | S>(...items: Array<Item>): Array<T | S>;
+
 export function createRxComponent<PropsTypeIn: Object, PropsTypeOut: Object>(
+//export function createRxComponent<PropsTypeIn, PropsTypeOut>(
     mapProps: MapFuncType<PropsTypeIn,PropsTypeOut>,
-    innerComponent: (prop: PropsTypeOut) => React.Element<*>
+    InnerComponent: (prop: PropsTypeOut) => React.Element<*>
 ): (prop: PropsTypeIn) => React.Element<*> {
+//): FuncOutType<PropsTypeIn> {
 
     class RxComponent extends Component {
 
@@ -80,9 +88,9 @@ export function createRxComponent<PropsTypeIn: Object, PropsTypeOut: Object>(
             super(props);
 
             this.receive$ = new Rx.Subject();
-            const props$ = this.receive$;   //.startWith(props);
+            //const props$ = this.receive$;   //.startWith(props);
 
-            this.subscription = mapProps(props$)
+            this.subscription = mapProps(this.receive$.asObservable())
                 .subscribe((newInnerProps: PropsTypeOut) => {
                     this.innerProps = newInnerProps;
                     this.forceUpdate();
@@ -105,10 +113,20 @@ export function createRxComponent<PropsTypeIn: Object, PropsTypeOut: Object>(
             this.subscription.unsubscribe();
         }
 
-        render() {
-            return createElement(innerComponent, this.innerProps);
+        render(): React.Element<*> {
+            return createElement(InnerComponent, this.innerProps);
         }
     };
 
-    return RxComponent;
+    //return RxComponent;
+
+    return (props: PropsTypeIn): React.Element<*> => {
+        return createElement(RxComponent, props);
+
+        /*
+        return (
+            <RxComponent {...props} />
+        );
+        */
+    };
 }

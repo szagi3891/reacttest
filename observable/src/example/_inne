@@ -1,0 +1,15 @@
+
+/*
+const createRxComponent = props$ => {
+  const increment$ = funcSubject(); // handleIncrement
+  const count$ = increment$
+    .startWith(0) // state = { count: 0 }
+    .scan(count => count + 1); // this.setState((state) => ({ count: count + 1 }))
+
+  return Observable.combineLatest(props$, count$, (props, count) => ({
+    ...props,
+    increment: increment$,
+    count
+  }));
+};
+*/

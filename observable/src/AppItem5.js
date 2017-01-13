@@ -1,5 +1,5 @@
 /* @flow */
-import React, { Component } from 'react';
+import React/*, { Component }*/ from 'react';
 import Rx from 'rxjs';
 
 import { createRxComponent } from './Base5';
@@ -11,9 +11,9 @@ type ItemType = {
     age: string,
 };
 
-type PropsTypeIn = {
+type PropsTypeIn = {|
     id: string,
-};
+|};
 
 type PropsTypeOut = {
     id: string,
@@ -39,49 +39,27 @@ const mapToProps5 = (props$: rxjs$Observable<PropsTypeIn>): rxjs$Observable<Prop
     }));
 };
 
-class AppItem5 extends Component {
+const AppItem5 = (props: PropsTypeOut): React.Element<*> => {
+    const { id, model } = props;
+    const refresh = () => {
+        Store.refresh(id);
+    };
 
-    props: PropsTypeOut;
+    console.info(`RENDER ITEM: ${id}`);
 
-    render() {
-        const { id, model } = this.props;
-
-        console.info(`RENDER ITEM: ${id}`);
-
-        if (model) {
-            return (
-                <div>
-                    <span>name: {model.name}</span> &nbsp;&nbsp;
-                    <span>age: {model.age}</span> &nbsp;&nbsp;
-                    <span style={{cursor: 'pointer'}} onClick={this._refresh.bind(this)}>Refresh</span>
-                </div>
-            );
-        }
-
+    if (model) {
         return (
-            <div> {'loading ' + id} </div>
+            <div>
+                <span>name: {model.name}</span> &nbsp;&nbsp;
+                <span>age: {model.age}</span> &nbsp;&nbsp;
+                <span style={{cursor: 'pointer'}} onClick={refresh}>Refresh</span>
+            </div>
         );
     }
 
-    _refresh() {
-        const { id } = this.props;
-        Store.refresh(id);
-    }
-}
+    return (
+        <div> {'loading ' + id} </div>
+    );
+};
 
 export default createRxComponent(mapToProps5, AppItem5);
-
-/*
-const createRxComponent = props$ => {
-  const increment$ = funcSubject(); // handleIncrement
-  const count$ = increment$
-    .startWith(0) // state = { count: 0 }
-    .scan(count => count + 1); // this.setState((state) => ({ count: count + 1 }))
-
-  return Observable.combineLatest(props$, count$, (props, count) => ({
-    ...props,
-    increment: increment$,
-    count
-  }));
-};
-*/
