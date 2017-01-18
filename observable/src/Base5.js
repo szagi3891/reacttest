@@ -55,28 +55,28 @@ function shouldComponentUpdate(nextProps: mixed, nextState: mixed): bool {
 */
 
 
-/*
-function createRxComponent<PropsTypeIn, PropsTypeOut>(
-    mapProps: MapFuncType<PropsTypeIn,PropsTypeOut>,
-    innerComponent: React$Component<any, PropsTypeOut, any>
-): React$Component<any, PropsTypeIn, PropsTypeOut> {
-*/
-
 
 type MapFuncType<PropsTypeIn, PropsTypeOut> = (observable: Rx.Observable<PropsTypeIn>) => Rx.Observable<PropsTypeOut>;
 
 type FuncOutType<PropsTypeIn> = (prop: PropsTypeIn) => React.Element<*>;
 
-//concat<S, Item: Array<S> | S>(...items: Array<Item>): Array<T | S>;
 
+
+export const createRxComponent = <PropsTypeIn: Object, PropsTypeOut: Object>(
+    mapProps: MapFuncType<PropsTypeIn, PropsTypeOut>,
+    InnerComponent: (prop: PropsTypeOut) => React.Element<any>
+): ((prop: PropsTypeIn) => React.Element<any>) => {
+
+/*
 export function createRxComponent<PropsTypeIn: Object, PropsTypeOut: Object>(
-//export function createRxComponent<PropsTypeIn, PropsTypeOut>(
     mapProps: MapFuncType<PropsTypeIn,PropsTypeOut>,
     InnerComponent: (prop: PropsTypeOut) => React.Element<*>
 ): (prop: PropsTypeIn) => React.Element<*> {
+*/
+
 //): FuncOutType<PropsTypeIn> {
 
-    class RxComponent extends Component {
+    class RxComponent extends Component<void, PropsTypeIn, void> {
 
         props: PropsTypeIn;
         innerProps: PropsTypeOut;
@@ -113,20 +113,22 @@ export function createRxComponent<PropsTypeIn: Object, PropsTypeOut: Object>(
             this.subscription.unsubscribe();
         }
 
-        render(): React.Element<*> {
-            return createElement(InnerComponent, this.innerProps);
+        render(): React.Element<any> {
+            //return createElement(InnerComponent, this.innerProps);
+            return (
+                <InnerComponent {...this.innerProps} />
+            );
+
         }
     };
 
     //return RxComponent;
 
-    return (props: PropsTypeIn): React.Element<*> => {
-        return createElement(RxComponent, props);
+    return (props: PropsTypeIn): React.Element<any> => {
+        //return createElement(RxComponent, props);
 
-        /*
         return (
             <RxComponent {...props} />
         );
-        */
     };
 }

@@ -62,4 +62,9 @@ const AppItem5 = (props: PropsTypeOut): React.Element<*> => {
     );
 };
 
-export default createRxComponent(mapToProps5, AppItem5);
+const AppItem5Bis: (props: PropsTypeIn) => React.Element<*> = createRxComponent(mapToProps5, AppItem5);
+
+export default AppItem5Bis;
+
+//export default createRxComponent(mapToProps5, AppItem5);
+//export default createRxComponent<PropsTypeIn, PropsTypeOut>(mapToProps5, AppItem5);
