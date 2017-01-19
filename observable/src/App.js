@@ -17,18 +17,31 @@ type PropsOutType = {
 };
 
 const mapToProps = (props$: rxjs$Observable<PropsInType>): rxjs$Observable<PropsOutType> => {
+
+    const dd = {
+        list: ['0','1','2','3','4'],
+        addNew: () => {
+            console.warn('ADD NEW');
+        }
+    };
+
+    return props$.map((props: PropsInType): PropsOutType => dd);
+
+/*
     return Rx.Observable.of({
         list: ['0','1','2','3','4'],
         addNew: () => {
             console.warn('ADD NEW');
-            /*
-            const { list } = this.state;
-            this.setState({
-                list: list.concat([list.length.toString()])
-            });
-            */
         }
     });
+*/
+
+    /*
+    const { list } = this.state;
+    this.setState({
+        list: list.concat([list.length.toString()])
+    });
+    */
 };
 
 class App extends Component {
@@ -84,12 +97,12 @@ class App extends Component {
 }
 
 
-const AppFn = (newProps: PropsOutType): React.Element<*> => {
+const AppFn = (props: PropsOutType): React.Element<*> => {
     return (
-        <App {...newProps} />
+        <App {...props} />
     );
 };
 
-const AppExport: (newProps: {}) => React.Element<*> = createRxComponent(mapToProps, AppFn);
+const AppExport: (props: PropsInType) => React.Element<*> = createRxComponent(mapToProps, AppFn);
 
 export default AppExport;

@@ -64,7 +64,6 @@ export function shouldComponentUpdate(nextProps: mixed, nextState: mixed): bool 
     https://github.com/acdlite/react-rx-component/blob/master/src/funcSubject.js
 */
 
-
 const isEqualProps = (a: mixed, b: mixed): bool => !shoudUpdate(a,b);
 
 type MapFuncType<PropsTypeIn, PropsTypeOut> = (observable: Rx.Observable<PropsTypeIn>) => Rx.Observable<PropsTypeOut>;
@@ -85,22 +84,23 @@ export const createRxComponent = <PropsTypeIn: Object, PropsTypeOut: Object>(
 
         constructor(props: PropsTypeIn) {
             super(props);
-
             this.receive$ = new Rx.Subject();
-
-            this.subscription = mapProps(this.receive$.asObservable())
-                .distinctUntilChanged(isEqualProps)
-                .subscribe((newInnerProps: PropsTypeOut) => {
-                    this.innerProps = newInnerProps;
-                    this.forceUpdate();
-                });
         }
 
         shouldComponentUpdate() {
             return false;
         }
 
-        componentDidMount() {
+        componentWillMount() {
+            this.subscription = mapProps(this.receive$.asObservable())
+                .distinctUntilChanged(isEqualProps)
+                .subscribe((newInnerProps: PropsTypeOut) => {
+                    console.warn('subscribe exec', newInnerProps);
+                    this.innerProps = newInnerProps;
+
+                    this.forceUpdate();
+                });
+
             this.receive$.next(this.props);
         }
 
@@ -112,7 +112,7 @@ export const createRxComponent = <PropsTypeIn: Object, PropsTypeOut: Object>(
             this.subscription.unsubscribe();
         }
 
-        render(): React.Element<*> {
+        render(): React.Element<*> | null {
             return (
                 <InnerComponent {...this.innerProps} />
             );
