@@ -2,7 +2,7 @@
 import React/*, { Component }*/ from 'react';
 import Rx from 'rxjs';
 
-import { createRxComponent } from './Base5';
+import { createRxComponent } from './Base';
 //import { createRxComponent } from './Test';
 import Store from './Store';
 
@@ -20,7 +20,7 @@ type PropsTypeOut = {
     model: ItemType | null,
 };
 
-const mapToProps5 = (props$: rxjs$Observable<PropsTypeIn>): rxjs$Observable<PropsTypeOut> => {
+const mapToProps = (props$: rxjs$Observable<PropsTypeIn>): rxjs$Observable<PropsTypeOut> => {
     const model$ = props$
         .map(props => props.id)
         .distinctUntilChanged()
@@ -39,7 +39,7 @@ const mapToProps5 = (props$: rxjs$Observable<PropsTypeIn>): rxjs$Observable<Prop
     }));
 };
 
-const AppItem5 = (props: PropsTypeOut): React.Element<*> => {
+const AppItem = (props: PropsTypeOut): React.Element<*> => {
     const { id, model } = props;
     const refresh = () => {
         Store.refresh(id);
@@ -62,9 +62,6 @@ const AppItem5 = (props: PropsTypeOut): React.Element<*> => {
     );
 };
 
-const AppItem5Bis: (props: PropsTypeIn) => React.Element<*> = createRxComponent(mapToProps5, AppItem5);
+const AppItemExport: (props: PropsTypeIn) => React.Element<*> = createRxComponent(mapToProps, AppItem);
 
-export default AppItem5Bis;
-
-//export default createRxComponent(mapToProps5, AppItem5);
-//export default createRxComponent<PropsTypeIn, PropsTypeOut>(mapToProps5, AppItem5);
+export default AppItemExport;

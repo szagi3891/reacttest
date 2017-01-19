@@ -2,7 +2,7 @@
 import React from 'react';
 import Rx from 'rxjs';
 
-import BaseComponent3 from './BaseComponent3';
+import BaseComponent3 from './_old/BaseComponent3';
 
 type MessageItem = {
     id: string,

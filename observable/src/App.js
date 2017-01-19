@@ -1,8 +1,8 @@
 /* @flow */
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import AppItem5 from './AppItem5';
-import './App.css';
+import logo from './static/logo.svg';
+import AppItem from './AppItem';
+import './static/App.css';
 import Store from './Store';
 import Suggester from './Suggester';
 import Form from './Form';
@@ -73,7 +73,7 @@ class App extends Component {
     _renderList() {
         const { list } = this.state;
 
-        return list.map((itemId) => <AppItem5 key={itemId} id={itemId} />);
+        return list.map((itemId) => <AppItem key={itemId} id={itemId} />);
     }
 }
 
