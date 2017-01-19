@@ -95,7 +95,6 @@ export const createRxComponent = <PropsTypeIn: Object, PropsTypeOut: Object>(
             this.subscription = mapProps(this.receive$.asObservable())
                 .distinctUntilChanged(isEqualProps)
                 .subscribe((newInnerProps: PropsTypeOut) => {
-                    console.warn('subscribe exec', newInnerProps);
                     this.innerProps = newInnerProps;
 
                     this.forceUpdate();
@@ -112,7 +111,7 @@ export const createRxComponent = <PropsTypeIn: Object, PropsTypeOut: Object>(
             this.subscription.unsubscribe();
         }
 
-        render(): React.Element<*> | null {
+        render(): React.Element<*> {
             return (
                 <InnerComponent {...this.innerProps} />
             );

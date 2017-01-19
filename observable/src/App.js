@@ -17,7 +17,7 @@ type PropsOutType = {
 };
 
 const mapToProps = (props$: rxjs$Observable<PropsInType>): rxjs$Observable<PropsOutType> => {
-
+/*
     const dd = {
         list: ['0','1','2','3','4'],
         addNew: () => {
@@ -26,7 +26,33 @@ const mapToProps = (props$: rxjs$Observable<PropsInType>): rxjs$Observable<Props
     };
 
     return props$.map((props: PropsInType): PropsOutType => dd);
+*/
+    const action$ = new Rx.Subject();
 
+    const addNew = () => {
+        console.warn('ADD NEW2');
+        action$.next();
+    };
+
+    const initValue = ['0','1','2','3','4'];
+
+    const reducer = (state: Array<string>, action: void): Array<string> => {
+        console.warn('redukcja', state);
+        const newId = state.length.toString();
+        return state.concat([newId]);
+    };
+
+    const store$ = action$
+        .scan(reducer, initValue)             //scan oraz startWith - nowa maszynka stanu + natychmiastowa emisja początkowego stanu
+        .startWith(initValue)
+        .map((list) => {
+            return {
+                list: list,
+                addNew: addNew
+            };
+        });
+
+    return store$;
 /*
     return Rx.Observable.of({
         list: ['0','1','2','3','4'],
@@ -35,13 +61,6 @@ const mapToProps = (props$: rxjs$Observable<PropsInType>): rxjs$Observable<Props
         }
     });
 */
-
-    /*
-    const { list } = this.state;
-    this.setState({
-        list: list.concat([list.length.toString()])
-    });
-    */
 };
 
 class App extends Component {
