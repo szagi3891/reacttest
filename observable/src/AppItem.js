@@ -11,16 +11,16 @@ type ItemType = {
     age: string,
 };
 
-type PropsTypeIn = {|
+type PropsInType = {|
     id: string,
 |};
 
-type PropsTypeOut = {
+type PropsOutType = {
     id: string,
     model: ItemType | null,
 };
 
-const mapToProps = (props$: rxjs$Observable<PropsTypeIn>): rxjs$Observable<PropsTypeOut> => {
+const mapToProps = (props$: rxjs$Observable<PropsInType>): rxjs$Observable<PropsOutType> => {
     const model$ = props$
         .map(props => props.id)
         .distinctUntilChanged()
@@ -39,7 +39,9 @@ const mapToProps = (props$: rxjs$Observable<PropsTypeIn>): rxjs$Observable<Props
     }));
 };
 
-const AppItem = (props: PropsTypeOut): React.Element<*> => {
+//TODO - sprawdzić czy jak się utowrzy PropsTypeOut lekko zmodyfikowany, to czy rzuci błędem że jest niezgodność
+
+const AppItem = (props: PropsOutType): React.Element<*> => {
     const { id, model } = props;
     const refresh = () => {
         Store.refresh(id);
@@ -62,6 +64,6 @@ const AppItem = (props: PropsTypeOut): React.Element<*> => {
     );
 };
 
-const AppItemExport: (props: PropsTypeIn) => React.Element<*> = createRxComponent(mapToProps, AppItem);
+const AppItemExport: (props: PropsInType) => React.Element<*> = createRxComponent(mapToProps, AppItem);
 
 export default AppItemExport;

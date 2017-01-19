@@ -6,25 +6,38 @@ import './static/App.css';
 import Store from './Store';
 import Suggester from './Suggester';
 import Form from './Form';
+import { createRxComponent } from './Base';
+import Rx from 'rxjs';
 
+type PropsInType = {};
 
-type StateType = {
-    list: Array<string>
+type PropsOutType = {
+    list: Array<string>,
+    addNew: () => void,
+};
+
+const mapToProps = (props$: rxjs$Observable<PropsInType>): rxjs$Observable<PropsOutType> => {
+    return Rx.Observable.of({
+        list: ['0','1','2','3','4'],
+        addNew: () => {
+            console.warn('ADD NEW');
+            /*
+            const { list } = this.state;
+            this.setState({
+                list: list.concat([list.length.toString()])
+            });
+            */
+        }
+    });
 };
 
 class App extends Component {
 
-    state: StateType;
-
-    constructor() {
-        super();
-
-        this.state = {
-            list: ['0','1','2','3','4']
-        };
-    }
+    props: PropsOutType;
 
     render() {
+        const { addNew } = this.props;
+
         return (
             <div className="App">
                 <div className="App-header">
@@ -32,7 +45,7 @@ class App extends Component {
                     <h2>Welcome to React</h2>
                 </div>
                 <div style={{marginTop: '20px', marginBottom: '20px'}}>
-                    <button onClick={this._addNew.bind(this)}>Dodaj kolejny element</button>
+                    <button onClick={addNew}>Dodaj kolejny element</button>
                     <button onClick={this._update.bind(this)}>Niespodziewany update drugiego elementu</button>
                 </div>
                 <div className="list">
@@ -59,22 +72,24 @@ class App extends Component {
         );
     }
 
-    _addNew() {
-        const { list } = this.state;
-        this.setState({
-            list: list.concat([list.length.toString()])
-        });
-    }
-
     _update() {
         Store.updateAge('2', '444');
     }
 
     _renderList() {
-        const { list } = this.state;
+        const { list } = this.props;
 
         return list.map((itemId) => <AppItem key={itemId} id={itemId} />);
     }
 }
 
-export default App;
+
+const AppFn = (newProps: PropsOutType): React.Element<*> => {
+    return (
+        <App {...newProps} />
+    );
+};
+
+const AppExport: (newProps: {}) => React.Element<*> = createRxComponent(mapToProps, AppFn);
+
+export default AppExport;
