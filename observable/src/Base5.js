@@ -68,16 +68,12 @@ export function shouldComponentUpdate(nextProps: mixed, nextState: mixed): bool 
 const isEqualProps = (a: mixed, b: mixed): bool => !shoudUpdate(a,b);
 
 type MapFuncType<PropsTypeIn, PropsTypeOut> = (observable: Rx.Observable<PropsTypeIn>) => Rx.Observable<PropsTypeOut>;
-
-type FuncOutType<PropsTypeIn> = (prop: PropsTypeIn) => React.Element<*>;
-
-//): FuncOutType<PropsTypeIn> {
-
+type FuncComponentType<PropsType> = (prop: PropsType) => React.Element<*>;
 
 export const createRxComponent = <PropsTypeIn: Object, PropsTypeOut: Object>(
     mapProps: MapFuncType<PropsTypeIn, PropsTypeOut>,
-    InnerComponent: (prop: PropsTypeOut) => React.Element<*>
-): ((prop: PropsTypeIn) => React.Element<*>) => {
+    InnerComponent: FuncComponentType<PropsTypeOut>
+): FuncComponentType<PropsTypeIn> => {
 
     class RxComponent extends Component<void, PropsTypeIn, void> {
 
