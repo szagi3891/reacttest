@@ -14,19 +14,33 @@ type PropsInType = {};
 type PropsOutType = {
     list: Array<string>,
     addNew: () => void,
+    update: () => void,
 };
 
 const mapToProps = (props$: rxjs$Observable<PropsInType>): rxjs$Observable<PropsOutType> => {
-/*
-    const dd = {
-        list: ['0','1','2','3','4'],
-        addNew: () => {
-            console.warn('ADD NEW');
-        }
+
+    const list$ = new Rx.BehaviorSubject(['0','1','2','3','4']);
+
+    const addNew = () => {
+        console.warn('ADD NEW3');
+        const currentList = list$.getValue();
+        const newId = currentList.length.toString();
+        list$.next(currentList.concat([newId]));
     };
 
-    return props$.map((props: PropsInType): PropsOutType => dd);
-*/
+    const update = () => {
+        Store.updateAge('2', '444');
+    };
+
+    return list$.map((list) => {
+        return {
+            list: list,
+            addNew: addNew,
+            update: update
+        };
+    });
+
+/*
     const action$ = new Rx.Subject();
 
     const addNew = () => {
@@ -53,6 +67,7 @@ const mapToProps = (props$: rxjs$Observable<PropsInType>): rxjs$Observable<Props
         });
 
     return store$;
+*/
 /*
     return Rx.Observable.of({
         list: ['0','1','2','3','4'],
@@ -68,7 +83,7 @@ class App extends Component {
     props: PropsOutType;
 
     render() {
-        const { addNew } = this.props;
+        const { addNew, update } = this.props;
 
         return (
             <div className="App">
@@ -78,7 +93,7 @@ class App extends Component {
                 </div>
                 <div style={{marginTop: '20px', marginBottom: '20px'}}>
                     <button onClick={addNew}>Dodaj kolejny element</button>
-                    <button onClick={this._update.bind(this)}>Niespodziewany update drugiego elementu</button>
+                    <button onClick={update}>Niespodziewany update drugiego elementu</button>
                 </div>
                 <div className="list">
                     <div className="listLeft">
@@ -102,10 +117,6 @@ class App extends Component {
                 </div>
             </div>
         );
-    }
-
-    _update() {
-        Store.updateAge('2', '444');
     }
 
     _renderList() {
