@@ -7,7 +7,7 @@ import Store from './Store';
 import Suggester from './Suggester';
 import Form from './Form';
 import { createRxComponent } from './Base';
-import Rx from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 type PropsInType = {};
 
@@ -17,9 +17,9 @@ type PropsOutType = {
     update: () => void,
 };
 
-const mapToProps = (props$: Rx.Observable<PropsInType>): Rx.Observable<PropsOutType> => {
+const mapToProps = (props$: Observable<PropsInType>): Observable<PropsOutType> => {
 
-    const list$ = new Rx.BehaviorSubject(['0','1','2','3','4']);
+    const list$ = new BehaviorSubject(['0','1','2','3','4']);
 
     const addNew = () => {
         const currentList = list$.getValue();

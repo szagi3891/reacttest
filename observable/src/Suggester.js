@@ -1,6 +1,6 @@
 /* @flow */
 import React, { Component } from 'react';
-import Rx from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import { createRxComponent } from './Base';
 
@@ -13,10 +13,10 @@ class StoreApi {
 
     list: Map<string, Array<string>> = new Map();
 
-    getListByText(text): Rx.Observable<Array<string>> {
+    getListByText(text): Observable<Array<string>> {
         console.warn('suggester request po: ' + text);
 
-        return new Rx.Observable(observer => {
+        return new Observable(observer => {
 
             setTimeout(() => {
                 console.warn('suggester response z: ' + text);
@@ -35,9 +35,9 @@ type PropsOutType = {
     onChange: (evet: SyntheticEvent) => void,
 };
 
-const mapToProps = (props$: Rx.Observable<PropsInType>): Rx.Observable<PropsOutType> => {
+const mapToProps = (props$: Observable<PropsInType>): Observable<PropsOutType> => {
     const storeApi = new StoreApi();
-    const input$ = new Rx.Subject();
+    const input$ = new Subject();
 
     const onChange = (event: SyntheticEvent) => {
         const target = event.target;

@@ -1,17 +1,17 @@
 /* @flow */
-import React, { Component } from 'react';
-import Rx from 'rxjs';
+import React from 'react';
+import { Observable, Subject } from 'rxjs';
 
 import { createRxComponent } from './Base';
 
 
 type SenderSubjectType<T> = {
     send: (value: T) => void,
-    receive: Rx.Observable<T>
+    receive: Observable<T>
 };
 
 function senderSubject<T>(): SenderSubjectType<T> {
-    const subject: Rx.Subject<T> = new Rx.Subject();
+    const subject: Subject<T> = new Subject();
 
     return {
         receive: subject.asObservable(),
@@ -42,7 +42,7 @@ type PropsOutType = {
 
 
 
-const mapToProps = (props$: Rx.Observable<PropsInType>): Rx.Observable<PropsOutType> => {
+const mapToProps = (props$: Observable<PropsInType>): Observable<PropsOutType> => {
 
     const sender1 = senderSubject();
     const sender2 = senderSubject();
@@ -64,7 +64,7 @@ const mapToProps = (props$: Rx.Observable<PropsInType>): Rx.Observable<PropsOutT
         .startWith('')
         .map(value => value !== 'rr' ? 'Proszę wprowadzić frazę "rr"': null);
 
-    const messages$ = Rx.Observable.combineLatest(message1$, message2$, message3$, (message1, message2, message3) => {
+    const messages$ = Observable.combineLatest(message1$, message2$, message3$, (message1, message2, message3) => {
         const messages = [];
 
         if (message1 !== null) {
@@ -109,7 +109,7 @@ const mapToProps = (props$: Rx.Observable<PropsInType>): Rx.Observable<PropsOutT
         };
     };
 
-    return Rx.Observable.combineLatest(
+    return Observable.combineLatest(
         message1$,
         message2$,
         message3$,

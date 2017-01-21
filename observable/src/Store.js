@@ -1,5 +1,5 @@
 /* @flow */
-import Rx from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 type ItemType = {
     name: string,
@@ -8,7 +8,7 @@ type ItemType = {
 
 class Store {
 
-    data: Map<string, Rx.BehaviorSubject<ItemType|null>>;
+    data: Map<string, BehaviorSubject<ItemType|null>>;
 
     constructor() {
         this.data = new Map();
@@ -24,14 +24,14 @@ class Store {
         this._makeFakeRequest(id, subject);
     }
 
-    _getItem(id: string): Rx.BehaviorSubject<ItemType|null> {
+    _getItem(id: string): BehaviorSubject<ItemType|null> {
         const subject = this.data.get(id);
         return subject ? subject : this._makeNewSubject(id);
     }
 
     _makeNewSubject(id: string) {
 
-        const subject = new Rx.BehaviorSubject(null);
+        const subject = new BehaviorSubject(null);
 
         this.data.set(id, subject);
 
@@ -47,7 +47,7 @@ class Store {
         return subject;
     }
 
-    _makeFakeRequest(id: string, subject: Rx.BehaviorSubject<ItemType|null>) {
+    _makeFakeRequest(id: string, subject: BehaviorSubject<ItemType|null>) {
 
         console.warn(`request po ${id}`);
 

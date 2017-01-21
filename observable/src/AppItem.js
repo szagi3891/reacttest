@@ -1,6 +1,6 @@
 /* @flow */
 import React from 'react';
-import Rx from 'rxjs';
+import  { Observable } from 'rxjs';
 
 import { createRxComponent } from './Base';
 import Store from './Store';
@@ -17,10 +17,9 @@ type PropsInType = {|
 type PropsOutType = {
     id: string,
     model: ItemType | null,
-    refresh: () => void
 };
 
-const mapToProps = (props$: Rx.Observable<PropsInType>): Rx.Observable<PropsOutType> => {
+const mapToProps = (props$: Observable<PropsInType>): Observable<PropsOutType> => {
     const model$ = props$
         .map(props => props.id)
         .distinctUntilChanged()
@@ -28,21 +27,22 @@ const mapToProps = (props$: Rx.Observable<PropsInType>): Rx.Observable<PropsOutT
 
         //.switchMap(id => Store.getUser(id));  ---> .switchMap(id => Store.getUser(id).map( -> model + metoda refresh ));
 /*
-    const timer$ = Rx.Observable.interval(1000)
+    const timer$ = Observable.interval(1000)
           .map(i => i % 2).startWith(true);
 */
 
-    return Rx.Observable.combineLatest(props$, model$, (props, model) => ({
+    return Observable.combineLatest(props$, model$, (props, model) => ({
         ...props,
-        model,
-        refresh: () => Store.refresh(props.id)
+        model
     }));
 };
 
 //TODO - sprawdzić czy jak się utowrzy PropsTypeOut lekko zmodyfikowany, to czy rzuci błędem że jest niezgodność
 
 const AppItem = (props: PropsOutType): React.Element<*> => {
-    const { id, model, refresh } = props;
+    const { id, model } = props;
+
+    const refresh = () => Store.refresh(props.id);
 
     console.info(`RENDER ITEM: ${id}`);
 

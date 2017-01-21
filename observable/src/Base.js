@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import Rx from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { is as immutableIs, Map, List, Stack, OrderedMap, Set as ImmutableSet, OrderedSet} from 'immutable';
 
 const isImmutable = (obj: mixed): bool => {
@@ -62,7 +62,7 @@ export function shouldComponentUpdate(nextProps: mixed, nextState: mixed): bool 
 
 const isEqualProps = (a: mixed, b: mixed): bool => !shoudUpdate(a,b);
 
-type MapFuncType<PropsTypeIn, PropsTypeOut> = (observable: Rx.Observable<PropsTypeIn>) => Rx.Observable<PropsTypeOut>;
+type MapFuncType<PropsTypeIn, PropsTypeOut> = (observable: Observable<PropsTypeIn>) => Observable<PropsTypeOut>;
 type FuncComponentType<PropsType> = (prop: PropsType) => React.Element<*>;
 
 export const createRxComponent = <PropsTypeIn: Object, PropsTypeOut: Object>(
@@ -75,8 +75,8 @@ export const createRxComponent = <PropsTypeIn: Object, PropsTypeOut: Object>(
         props: PropsTypeIn;
 
         innerProps: PropsTypeOut | null = null;
-        receive$: Rx.Subject<PropsTypeIn> = new Rx.Subject();
-        subscription: Rx.Subscription | null = null;
+        receive$: Subject<PropsTypeIn> = new Subject();
+        subscription: Subscription | null = null;
 
         shouldComponentUpdate() {
             return false;
