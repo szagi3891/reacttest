@@ -8,7 +8,7 @@ type ItemType = {
 
 class Store {
 
-    data: Map<string, rxjs$BehaviorSubject<ItemType|null>>;
+    data: Map<string, Rx.BehaviorSubject<ItemType|null>>;
 
     constructor() {
         this.data = new Map();
@@ -24,7 +24,7 @@ class Store {
         this._makeFakeRequest(id, subject);
     }
 
-    _getItem(id: string): rxjs$BehaviorSubject<ItemType|null> {
+    _getItem(id: string): Rx.BehaviorSubject<ItemType|null> {
         const subject = this.data.get(id);
         return subject ? subject : this._makeNewSubject(id);
     }
@@ -47,7 +47,7 @@ class Store {
         return subject;
     }
 
-    _makeFakeRequest(id: string, subject: rxjs$BehaviorSubject<ItemType|null>) {
+    _makeFakeRequest(id: string, subject: Rx.BehaviorSubject<ItemType|null>) {
 
         console.warn(`request po ${id}`);
 

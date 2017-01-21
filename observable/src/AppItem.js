@@ -19,7 +19,7 @@ type PropsOutType = {
     model: ItemType | null,
 };
 
-const mapToProps = (props$: rxjs$Observable<PropsInType>): rxjs$Observable<PropsOutType> => {
+const mapToProps = (props$: Rx.Observable<PropsInType>): Rx.Observable<PropsOutType> => {
     const model$ = props$
         .map(props => props.id)
         .distinctUntilChanged()

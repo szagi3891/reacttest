@@ -9,8 +9,8 @@ class BaseComponent3<DefaultPropsType, PropsType, StateType> extends Component<D
     props: PropsType;
     state: $Abstract<StateType>;
 
-    _propsSubject: rxjs$Subject<PropsType>;
-    _subscribeList: Array<rxjs$Subscription>;
+    _propsSubject: Rx.Subject<PropsType>;
+    _subscribeList: Array<Rx.Subscription>;
 
     constructor(props: PropsType) {
         super(props);
@@ -19,7 +19,7 @@ class BaseComponent3<DefaultPropsType, PropsType, StateType> extends Component<D
         this._subscribeList = [];
     }
 
-    onProps(callback: (propsStream: rxjs$Observable<PropsType>) => rxjs$Subscription) {
+    onProps(callback: (propsStream: Rx.Observable<PropsType>) => Rx.Subscription) {
         this._subscribeList.push(callback(this._propsSubject.asObservable()));
     }
 

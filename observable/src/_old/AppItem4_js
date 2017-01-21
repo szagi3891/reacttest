@@ -40,7 +40,7 @@ class AppItem4 extends BaseComponent4 {
             }, 6000);
         }, 3000);
 */
-        this.onProps((props$: rxjs$Observable<PropsType>): rxjs$Subscription => {
+        this.onProps((props$: Rx.Observable<PropsType>): Rx.Subscription => {
             const user$ = props$
                 .map(props => props.id)
                 .distinctUntilChanged()

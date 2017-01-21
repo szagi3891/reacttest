@@ -41,7 +41,7 @@
     props: {};
     state: StateType;
 
-    input$: rxjs$Subject<string>;
+    input$: Rx.Subject<string>;
 
     constructor(props: {}) {
         super(props);

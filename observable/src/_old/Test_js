@@ -26,8 +26,8 @@ export function createRxComponent<PropsTypeIn, PropsTypeOut>(
         props: PropsTypeIn;
         innerProps: null | PropsTypeOut;
 
-        receive$: rxjs$Subject<PropsTypeIn>;
-        subscription: rxjs$Subscription;
+        receive$: Rx.Subject<PropsTypeIn>;
+        subscription: Rx.Subscription;
 
         constructor(props: PropsTypeIn) {
             super(props);

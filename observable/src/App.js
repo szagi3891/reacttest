@@ -17,7 +17,7 @@ type PropsOutType = {
     update: () => void,
 };
 
-const mapToProps = (props$: rxjs$Observable<PropsInType>): rxjs$Observable<PropsOutType> => {
+const mapToProps = (props$: Rx.Observable<PropsInType>): Rx.Observable<PropsOutType> => {
 
     const list$ = new Rx.BehaviorSubject(['0','1','2','3','4']);
 

@@ -13,7 +13,7 @@ class StoreApi {
 
     list: Map<string, Array<string>> = new Map();
 
-    getListByText(text): rxjs$Observable<Array<string>> {
+    getListByText(text): Rx.Observable<Array<string>> {
         console.warn('suggester request po: ' + text);
 
         return new Rx.Observable(observer => {
@@ -35,7 +35,7 @@ type PropsOutType = {
     onChange: (evet: SyntheticEvent) => void,
 };
 
-const mapToProps = (props$: rxjs$Observable<PropsInType>): rxjs$Observable<PropsOutType> => {
+const mapToProps = (props$: Rx.Observable<PropsInType>): Rx.Observable<PropsOutType> => {
     const storeApi = new StoreApi();
     const input$ = new Rx.Subject();
 

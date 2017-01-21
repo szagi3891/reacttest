@@ -8,17 +8,17 @@ import { createRxComponent } from './Base';
 //https://github.com/acdlite/react-rx-component/blob/master/src/funcSubject.js
 
 type SenderSubjectType<T> = {
-    send: rxjs$Observable<(value: T) => void>,
-    receive: rxjs$Observable<T>
+    send: Rx.Observable<(value: T) => void>,
+    receive: Rx.Observable<T>
 };
 
 function senderSubject<T>(): SenderSubjectType<T> {
-    const subject: rxjs$Subject<T> = new Rx.Subject();
+    const subject: Rx.Subject<T> = new Rx.Subject();
 
     const sendValue = (value: T) => {
         subject.next(value);
     };
-    const behaviorSubject: rxjs$BehaviorSubject<(value: T) => void> = new Rx.BehaviorSubject(sendValue);      //TODO - Do wywalenia
+    const behaviorSubject: Rx.BehaviorSubject<(value: T) => void> = new Rx.BehaviorSubject(sendValue);      //TODO - Do wywalenia
 
     return {
         receive: subject.asObservable(),
@@ -47,14 +47,14 @@ type PropsOutType = {
 
 
 
-const mapToProps = (props$: rxjs$Observable<PropsInType>): rxjs$Observable<PropsOutType> => {
+const mapToProps = (props$: Rx.Observable<PropsInType>): Rx.Observable<PropsOutType> => {
 
     const sender1: SenderSubjectType<SyntheticEvent> = senderSubject();
     const sender2: SenderSubjectType<SyntheticEvent> = senderSubject();
     const sender3: SenderSubjectType<SyntheticEvent> = senderSubject();
     const submit : SenderSubjectType<SyntheticEvent> = senderSubject();
 
-    const message1$: rxjs$Observable<string | null> = sender1.receive
+    const message1$: Rx.Observable<string | null> = sender1.receive
         .map((e: SyntheticEvent): string => e.target instanceof HTMLInputElement ? e.target.value : '')
         .startWith('')
         .map(value => value.length > 3 ? 'Podaj maksymalnie 3 znaki' : null);

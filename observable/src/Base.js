@@ -75,8 +75,8 @@ export const createRxComponent = <PropsTypeIn: Object, PropsTypeOut: Object>(
         props: PropsTypeIn;
 
         innerProps: PropsTypeOut | null = null;
-        receive$: rxjs$Subject<PropsTypeIn> = new Rx.Subject();
-        subscription: rxjs$Subscription | null = null;
+        receive$: Rx.Subject<PropsTypeIn> = new Rx.Subject();
+        subscription: Rx.Subscription | null = null;
 
         shouldComponentUpdate() {
             return false;
