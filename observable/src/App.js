@@ -22,7 +22,6 @@ const mapToProps = (props$: rxjs$Observable<PropsInType>): rxjs$Observable<Props
     const list$ = new Rx.BehaviorSubject(['0','1','2','3','4']);
 
     const addNew = () => {
-        console.warn('ADD NEW3');
         const currentList = list$.getValue();
         const newId = currentList.length.toString();
         list$.next(currentList.concat([newId]));

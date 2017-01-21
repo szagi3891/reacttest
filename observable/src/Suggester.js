@@ -1,8 +1,8 @@
 /* @flow */
-import React from 'react';
+import React, { Component } from 'react';
 import Rx from 'rxjs';
 
-import BaseComponent3 from './_old/BaseComponent3';
+import { createRxComponent } from './Base';
 
 /*
     TODO z ponawianiem w przypadku błędu
@@ -11,11 +11,7 @@ import BaseComponent3 from './_old/BaseComponent3';
 
 class StoreApi {
 
-    list: Map<>;
-
-    constructor() {
-        this.list = new Map();
-    }
+    list: Map<string, Array<string>> = new Map();
 
     getListByText(text): rxjs$Observable<Array<string>> {
         console.warn('suggester request po: ' + text);
@@ -31,49 +27,49 @@ class StoreApi {
     }
 }
 
-type StateType = {
-    list: Array<string>
+
+type PropsInType = {};
+
+type PropsOutType = {
+    list: Array<string>,
+    onChange: (evet: SyntheticEvent) => void,
 };
 
-class Suggester extends BaseComponent3 {
+const mapToProps = (props$: rxjs$Observable<PropsInType>): rxjs$Observable<PropsOutType> => {
+    const storeApi = new StoreApi();
+    const input$ = new Rx.Subject();
 
-    props: {};
-    state: StateType;
+    const onChange = (event: SyntheticEvent) => {
+        const target = event.target;
+        if (target instanceof HTMLInputElement) {
+            input$.next(target.value);
+        }
+    };
 
-    input$: rxjs$Subject<string>;
+    return input$
+        .do(mess => console.warn('kliknięto ' + mess))
+        .debounceTime(1000)
+        .switchMap(text => storeApi.getListByText(text))
+        .startWith([])
+        .do(list => console.warn('otrzymano nową listę: ', list))
+        .map(list => {
+            return {
+                list: list,
+                onChange: onChange
+            };
+        });
+};
 
-    constructor(props: {}) {
-        super(props);
+class Suggester extends Component {
 
-        const storeApi = new StoreApi();
-
-        this.input$ = new Rx.Subject();
-        this.state = {
-            list: []
-        };
-
-        this.input$.subscribe(mess => console.warn('kliknięto ' + mess));
-
-        this.input$
-            .debounceTime(1000)
-            .switchMap(text => storeApi.getListByText(text))
-            .subscribe(list => {
-                console.warn('otrzymano nową listę: ', list);
-                this.setState({ list });
-            });
-    }
-
-    _onChange(e: Object) {
-        this.input$.next(e.target.value);
-    }
+    props: PropsOutType;
 
     render() {
+        const { onChange } = this.props;
 
         return (
             <div className="suggesterContainer">
-
-                <input onChange={this._onChange.bind(this)} />
-
+                <input onChange={onChange} />
                 <div>
                     { this._getSugestions() }
                 </div>
@@ -82,10 +78,18 @@ class Suggester extends BaseComponent3 {
     }
 
     _getSugestions() {
-        const { list } = this.state;
-
+        const { list } = this.props;
         return list.map((item, index) => <div key={index}>{item}</div> );
     }
 }
 
-export default Suggester;
+
+const SuggesterFn = (props: PropsOutType): React.Element<*> => {
+    return (
+        <Suggester {...props} />
+    );
+};
+
+const SuggesterExport: (props: PropsInType) => React.Element<*> = createRxComponent(mapToProps, SuggesterFn);
+
+export default SuggesterExport;
