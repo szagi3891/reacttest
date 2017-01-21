@@ -17,6 +17,7 @@ type PropsInType = {|
 type PropsOutType = {
     id: string,
     model: ItemType | null,
+    refresh: () => void
 };
 
 const mapToProps = (props$: Rx.Observable<PropsInType>): Rx.Observable<PropsOutType> => {
@@ -32,19 +33,16 @@ const mapToProps = (props$: Rx.Observable<PropsInType>): Rx.Observable<PropsOutT
 */
 
     return Rx.Observable.combineLatest(props$, model$, (props, model) => ({
-      ...props,
-      model
-      //timerOdd
+        ...props,
+        model,
+        refresh: () => Store.refresh(props.id)
     }));
 };
 
 //TODO - sprawdzić czy jak się utowrzy PropsTypeOut lekko zmodyfikowany, to czy rzuci błędem że jest niezgodność
 
 const AppItem = (props: PropsOutType): React.Element<*> => {
-    const { id, model } = props;
-    const refresh = () => {
-        Store.refresh(id);
-    };
+    const { id, model, refresh } = props;
 
     console.info(`RENDER ITEM: ${id}`);
 

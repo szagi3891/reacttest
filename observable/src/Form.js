@@ -49,7 +49,7 @@ const mapToProps = (props$: Rx.Observable<PropsInType>): Rx.Observable<PropsOutT
     const sender3 = senderSubject();
     const submit  = senderSubject();
 
-    const message1$: Rx.Observable<string | null> = sender1.receive
+    const message1$ = sender1.receive
         .map((e: SyntheticEvent): string => e.target instanceof HTMLInputElement ? e.target.value : '')
         .startWith('')
         .map(value => value.length > 3 ? 'Podaj maksymalnie 3 znaki' : null);
