@@ -118,61 +118,79 @@ const mapToProps = (props$: Rx.Observable<PropsInType>): Rx.Observable<PropsOutT
     );
 }
 
+type RenderInputType = {
+    onChange: (value: SyntheticEvent) => void,
+    message: string | null,
+};
 
-class Form extends Component {
+const RenderInput = (props: RenderInputType): React.Element<*> => {
+    const { onChange, message } = props;
 
-    props: PropsOutType;
-
-    render(): React.Element<*> {
-        const { message1, message2, message3, messages, sender1, sender2, sender3, submit} = this.props;
-
-        return (
-            <div className="test_form">
-
-                <input onChange={sender1} />
-                { message1 ? <div style={{color: 'red'}}>{message1}</div> : null }
-
-                <br/><br/>
-
-                <input onChange={sender2} />
-                { message2 ? <div style={{color: 'red'}}>{message2}</div> : null }
-
-                <br/><br/>
-
-                <input onChange={sender3} />
-                { message3 ? <div style={{color: 'red'}}>{message3}</div> : null }
-
-                <br/><br/>
-
-                { messages.length > 0 ? this._showMessages(messages): null}
-                <button onClick={submit}>WyślijSS</button>
-            </div>
-        );
-    }
-
-    _showMessages(messages: Array<MessageItem>): React.Element<*> {
-        return (
-            <div>
-                { messages.map(this._showMessageItem) }
-            </div>
-        );
-    }
-
-    _showMessageItem(item: MessageItem): React.Element<*> {
-        return (
-            <div key={item.id}>
-                {item.message}
-            </div>
-        );
-    }
-}
-
-const FormFn = (props: PropsOutType): React.Element<*> => {
     return (
-        <Form {...props} />
+      <div>
+          <input onChange={onChange} />
+          { message ? <div style={{color: 'red'}}>{message}</div> : null }
+          <br/><br/>
+      </div>
     );
 };
 
-const FormExport: (props: PropsInType) => React.Element<*> = createRxComponent(mapToProps, FormFn);
+const renderMessageItem = (item: MessageItem): React.Element<*> => {
+    return (
+        <div key={item.id}>
+            {item.message}
+        </div>
+    );
+}
+
+const ReqenderMessages = (props: { messages: Array<MessageItem> }): React.Element<*> | null => {
+    const { messages } = props;
+
+    if (messages.length === 0) {
+        return null;
+    }
+
+    return (
+        <div>
+            { messages.map(renderMessageItem) }
+        </div>
+    );
+};
+
+const Form = (props: PropsOutType): React.Element<*> => {
+
+    const { message1, message2, message3, messages, sender1, sender2, sender3, submit} = props;
+
+    return (
+        <div className="test_form">
+
+            <RenderInput
+                key="input1"
+                onChange={sender1}
+                message={message1}
+            />
+
+            <RenderInput
+                key="input2"
+                onChange={sender2}
+                message={message2}
+            />
+
+            <RenderInput
+                key="input3"
+                onChange={sender3}
+                message={message3}
+            />
+
+            <ReqenderMessages
+                messages={messages}
+            />
+
+            <button onClick={submit}>Wyślij</button>
+        </div>
+    );
+};
+
+const FormExport: (props: PropsInType) => React.Element<*> = createRxComponent(mapToProps, Form);
 
 export default FormExport;
