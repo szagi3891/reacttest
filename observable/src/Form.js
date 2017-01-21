@@ -5,24 +5,19 @@ import Rx from 'rxjs';
 import { createRxComponent } from './Base';
 
 
-//https://github.com/acdlite/react-rx-component/blob/master/src/funcSubject.js
-
 type SenderSubjectType<T> = {
-    send: Rx.Observable<(value: T) => void>,
+    send: (value: T) => void,
     receive: Rx.Observable<T>
 };
 
 function senderSubject<T>(): SenderSubjectType<T> {
     const subject: Rx.Subject<T> = new Rx.Subject();
 
-    const sendValue = (value: T) => {
-        subject.next(value);
-    };
-    const behaviorSubject: Rx.BehaviorSubject<(value: T) => void> = new Rx.BehaviorSubject(sendValue);      //TODO - Do wywalenia
-
     return {
         receive: subject.asObservable(),
-        send: behaviorSubject.asObservable()
+        send: (value: T) => {
+            subject.next(value);
+        }
     };
 }
 
@@ -49,10 +44,10 @@ type PropsOutType = {
 
 const mapToProps = (props$: Rx.Observable<PropsInType>): Rx.Observable<PropsOutType> => {
 
-    const sender1: SenderSubjectType<SyntheticEvent> = senderSubject();
-    const sender2: SenderSubjectType<SyntheticEvent> = senderSubject();
-    const sender3: SenderSubjectType<SyntheticEvent> = senderSubject();
-    const submit : SenderSubjectType<SyntheticEvent> = senderSubject();
+    const sender1 = senderSubject();
+    const sender2 = senderSubject();
+    const sender3 = senderSubject();
+    const submit  = senderSubject();
 
     const message1$: Rx.Observable<string | null> = sender1.receive
         .map((e: SyntheticEvent): string => e.target instanceof HTMLInputElement ? e.target.value : '')
@@ -101,20 +96,16 @@ const mapToProps = (props$: Rx.Observable<PropsInType>): Rx.Observable<PropsOutT
         message2: string | null,
         message3: string | null,
         messages: Array<MessageItem>,
-        sender1: (value: SyntheticEvent) => void,
-        sender2: (value: SyntheticEvent) => void,
-        sender3: (value: SyntheticEvent) => void,
-        submit: (value: SyntheticEvent) => void
     ): PropsOutType => {
         return {
             message1: message1,
             message2: message2,
             message3: message3,
             messages: messages,
-            sender1: sender1,
-            sender2: sender2,
-            sender3: sender3,
-            submit: submit
+            sender1: sender1.send,
+            sender2: sender2.send,
+            sender3: sender3.send,
+            submit: submit.send
         };
     };
 
@@ -123,10 +114,6 @@ const mapToProps = (props$: Rx.Observable<PropsInType>): Rx.Observable<PropsOutT
         message2$,
         message3$,
         messages$,
-        sender1.send,
-        sender2.send,
-        sender3.send,
-        submit.send,
         combineResult
     );
 }
@@ -158,7 +145,7 @@ class Form extends Component {
                 <br/><br/>
 
                 { messages.length > 0 ? this._showMessages(messages): null}
-                <button onClick={submit}>Wyślij</button>
+                <button onClick={submit}>WyślijSS</button>
             </div>
         );
     }
