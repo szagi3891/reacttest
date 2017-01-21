@@ -20,6 +20,8 @@ type StateType = {
     submit: (value: SyntheticEvent) => void,
 };
 
+//https://github.com/acdlite/react-rx-component/blob/master/src/funcSubject.js
+
 //: rxjs$Subject<string | null>
 
 type SenderSubjectType<T> = {

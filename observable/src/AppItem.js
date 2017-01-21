@@ -1,9 +1,8 @@
 /* @flow */
-import React/*, { Component }*/ from 'react';
+import React from 'react';
 import Rx from 'rxjs';
 
 import { createRxComponent } from './Base';
-//import { createRxComponent } from './Test';
 import Store from './Store';
 
 type ItemType = {

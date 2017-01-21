@@ -57,11 +57,7 @@ export function shouldComponentUpdate(nextProps: mixed, nextState: mixed): bool 
 };
 
 /*
-    wzorowane na :
-    https://github.com/acdlite/react-rx-component
-
-    TODO - przekazywanie funkcji callbackowych do render-a
-    https://github.com/acdlite/react-rx-component/blob/master/src/funcSubject.js
+    wzorowane na : https://github.com/acdlite/react-rx-component
 */
 
 const isEqualProps = (a: mixed, b: mixed): bool => !shoudUpdate(a,b);
@@ -77,14 +73,16 @@ export const createRxComponent = <PropsTypeIn: Object, PropsTypeOut: Object>(
     class RxComponent extends Component<void, PropsTypeIn, void> {
 
         props: PropsTypeIn;
-        innerProps: PropsTypeOut;
 
+        innerProps: PropsTypeOut | null;
         receive$: rxjs$Subject<PropsTypeIn>;
-        subscription: rxjs$Subscription;
+        subscription: rxjs$Subscription | null;
 
         constructor(props: PropsTypeIn) {
             super(props);
+            this.innerProps = null;
             this.receive$ = new Rx.Subject();
+            this.subscription = null;
         }
 
         shouldComponentUpdate() {
@@ -108,14 +106,19 @@ export const createRxComponent = <PropsTypeIn: Object, PropsTypeOut: Object>(
         }
 
         componentWillUnmount() {
-            this.subscription.unsubscribe();
+            if (this.subscription) {
+                this.subscription.unsubscribe();
+            }
         }
 
-        render(): React.Element<*> {
+        render(): React.Element<*> | null {
+            if (this.innerProps === null) {
+                return null;
+            }
+
             return (
                 <InnerComponent {...this.innerProps} />
             );
-
         }
     };
 
