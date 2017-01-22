@@ -9,9 +9,7 @@ class StoreTime {
             count: value,
             current: new Date()
         }))
-
         //.publish().refCount();
-        //.publish().refCount().startWith(0);
         .publishReplay(1).refCount();
 
     getFormat() {
