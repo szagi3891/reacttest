@@ -45,3 +45,10 @@ https://github.com/justinwoo/react-rxjs-flow
 przykładowa apka react + rx
 https://github.com/giltig/rxfrf/blob/master/src/server/middleware/universalReactApp.js
 https://github.com/omerts/RtC/blob/master/src/shared/components/ColorPad/ColorPad.js
+
+
+
+
+flow-typed
+    npm install flow-typed
+    flow-typed install - tworzy flow-typed katalog w projekcie

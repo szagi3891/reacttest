@@ -1,3 +1,6 @@
+// flow-typed signature: 677aa2f2bb526291b874fc69ff0fae00
+// flow-typed version: 6194e56223/rxjs_v5.0.x/flow_>=v0.34.x
+
 // FIXME(samgoldman) Remove top-level interface once Babel supports
 // `declare interface` syntax.
 // FIXME(samgoldman) Remove this once rxjs$Subject<T> can mixin rxjs$Observer<T>
@@ -224,6 +227,8 @@ declare class rxjs$Observable<+T> {
 
   skipUntil(other: rxjs$Observable<any> | Promise<any>): rxjs$Observable<T>;
 
+  skipWhile(predicate: (value: T) => boolean): rxjs$Observable<T>;
+
   startWith(...values: Array<T>): rxjs$Observable<T>;
 
   subscribeOn(scheduler: rxjs$SchedulerClass): rxjs$Observable<T>;
@@ -247,13 +252,13 @@ declare class rxjs$Observable<+T> {
 
   throttleTime(duration: number): rxjs$Observable<T>;
 
-  timeout(due: number | Date, errorToSend?: any): rxjs$Observable<T>;
+  timeout(due: number | Date, _: void): rxjs$Observable<T>;
 
   toArray(): rxjs$Observable<T[]>;
 
   toPromise(): Promise<T>;
 
-  //subscribe(observer: rxjs$PartialObserver<T>): rxjs$Subscription;
+  subscribe(observer: rxjs$PartialObserver<T>): rxjs$Subscription;
   subscribe(
     onNext: ?(value: T) => mixed,
     onError: ?(error: any) => mixed,
@@ -316,27 +321,17 @@ declare class rxjs$Observable<+T> {
     resultSelector: (a: A, b: B, c: C, d: D, e: E, f: F, g: G) => H,
   ): rxjs$Observable<H>;
 
-  static combineLatest<A, B, C, D, E, F, G, H, I>(
-    a: rxjs$Observable<A>,
-    b: rxjs$Observable<B>,
-    c: rxjs$Observable<C>,
-    d: rxjs$Observable<D>,
-    e: rxjs$Observable<E>,
-    f: rxjs$Observable<F>,
-    g: rxjs$Observable<G>,
-    i: rxjs$Observable<I>,
-    resultSelector: (a: A, b: B, c: C, d: D, e: E, f: F, g: G, i: I) => H,
-  ): rxjs$Observable<H>;
-
   static combineLatest<A, B>(
     a: rxjs$Observable<A>,
     b: rxjs$Observable<B>,
+    _: void,
   ): rxjs$Observable<[A, B]>;
 
   static combineLatest<A, B, C>(
     a: rxjs$Observable<A>,
     b: rxjs$Observable<B>,
     c: rxjs$Observable<C>,
+    _: void,
   ): rxjs$Observable<[A, B, C]>;
 
   static combineLatest<A, B, C, D>(
@@ -344,6 +339,7 @@ declare class rxjs$Observable<+T> {
     b: rxjs$Observable<B>,
     c: rxjs$Observable<C>,
     d: rxjs$Observable<D>,
+    _: void,
   ): rxjs$Observable<[A, B, C, D]>;
 
   static combineLatest<A, B, C, D, E>(
@@ -352,6 +348,7 @@ declare class rxjs$Observable<+T> {
     c: rxjs$Observable<C>,
     d: rxjs$Observable<D>,
     e: rxjs$Observable<E>,
+    _: void,
   ): rxjs$Observable<[A, B, C, D, E]>;
 
   static combineLatest<A, B, C, D, E, F>(
@@ -361,6 +358,7 @@ declare class rxjs$Observable<+T> {
     d: rxjs$Observable<D>,
     e: rxjs$Observable<E>,
     f: rxjs$Observable<F>,
+    _: void,
   ): rxjs$Observable<[A, B, C, D, E, F]>;
 
   static combineLatest<A, B, C, D, E, F, G>(
@@ -371,6 +369,7 @@ declare class rxjs$Observable<+T> {
     e: rxjs$Observable<E>,
     f: rxjs$Observable<F>,
     g: rxjs$Observable<G>,
+    _: void,
   ): rxjs$Observable<[A, B, C, D, E, F, G]>;
 
   static combineLatest<A, B, C, D, E, F, G, H>(
@@ -382,10 +381,12 @@ declare class rxjs$Observable<+T> {
     f: rxjs$Observable<F>,
     g: rxjs$Observable<G>,
     h: rxjs$Observable<H>,
+    _: void,
   ): rxjs$Observable<[A, B, C, D, E, F, G, H]>;
 
   combineLatest<A>(
-    a: rxjs$Observable<A>
+    a: rxjs$Observable<A>,
+    _: void,
   ): rxjs$Observable<[T, A]>;
 
   combineLatest<A, B>(
@@ -564,7 +565,8 @@ declare class rxjs$Observable<+T> {
   ): rxjs$Observable<[A, B, C, D, E, F, G, H]>;
 
   withLatestFrom<A>(
-    a: rxjs$Observable<A>
+    a: rxjs$Observable<A>,
+    _: void,
   ): rxjs$Observable<[T, A]>;
 
   withLatestFrom<A, B>(
@@ -680,6 +682,9 @@ declare class rxjs$SchedulerClass {
   schedule<T>(work: (state?: T) => void, delay?: number, state?: T): rxjs$Subscription;
 }
 
+declare class rxjs$TimeoutError extends Error {
+}
+
 declare module 'rxjs' {
   declare module.exports: {
     Observable: typeof rxjs$Observable,
@@ -694,6 +699,7 @@ declare module 'rxjs' {
       async: rxjs$SchedulerClass,
     },
     Subscription: typeof rxjs$Subscription,
+    TimeoutError: typeof rxjs$TimeoutError,
   }
 }
 
