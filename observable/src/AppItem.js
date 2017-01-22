@@ -1,14 +1,17 @@
 /* @flow */
 import React from 'react';
-import  { Observable } from 'rxjs';
+import  { Observable, BehaviorSubject } from 'rxjs';
 
 import { createRxComponent } from './Base';
 import Store from './Store';
+import StoreTime from './StoreTime';
 
 type ItemType = {
     name: string,
     age: string,
 };
+
+type TimerModeType = 'off' | 'mode1' | 'mode2';
 
 type PropsInType = {|
     id: string,
@@ -17,30 +20,66 @@ type PropsInType = {|
 type PropsOutType = {         //TODO - exact nie działa
     id: string,
     model: ItemType | null,
+    timerValue: string | null,
+    timerSwitch: () => void,
 };
 
 const mapToProps = (props$: Observable<PropsInType>): Observable<PropsOutType> => {
+
+    const timerMode$: BehaviorSubject<TimerModeType> = new BehaviorSubject('off');
+
+    const timerSwitch = () => {
+        const currentMode = timerMode$.getValue();
+
+        switch (currentMode) {
+            case 'off':
+                timerMode$.next('mode1');
+                break;
+            case 'mode1':
+                timerMode$.next('mode2');
+                break;
+            case 'mode2':
+                timerMode$.next('off');
+                break;
+        }
+    };
+
+    const timerValue$: Observable<null | string> = timerMode$.switchMap((value: TimerModeType): Observable<null | string> => {
+        switch (value) {
+            case 'off':
+                return Observable.of(null);
+            case 'mode1':
+                return StoreTime
+                    .getFormat()
+                    .map(item => `mode1 - ${item.count} - ${item.time}`);
+            case 'mode2':
+                return StoreTime
+                    .getTimestamp()
+                    .map(item => `mode2 - ${item.count} - ${item.time}`);
+            default:
+                //(value: empty);
+                return Observable.of(null);
+        }
+    });
+
     const model$ = props$
         .map(props => props.id)
         .distinctUntilChanged()
         .switchMap(id => Store.getUser(id));
 
-        //.switchMap(id => Store.getUser(id));  ---> .switchMap(id => Store.getUser(id).map( -> model + metoda refresh ));
-/*
-    const timer$ = Observable.interval(1000)
-          .map(i => i % 2).startWith(true);
-*/
-
-    return Observable.combineLatest(props$, model$, (props, model) => ({
+    return Observable.combineLatest(props$, model$, timerValue$, (props, model, timerValue) => ({
         ...props,
-        model
+        model,
+        timerValue,
+        timerSwitch
     }));
 };
+
 
 //TODO - sprawdzić czy jak się utowrzy PropsTypeOut lekko zmodyfikowany, to czy rzuci błędem że jest niezgodność
 
 const AppItem = (props: PropsOutType): React.Element<*> => {
-    const { id, model } = props;
+    const { id, model, timerValue, timerSwitch } = props;
 
     const refresh = () => Store.refresh(props.id);
 
@@ -52,6 +91,7 @@ const AppItem = (props: PropsOutType): React.Element<*> => {
                 <span>name: {model.name}</span> &nbsp;&nbsp;
                 <span>age: {model.age}</span> &nbsp;&nbsp;
                 <span style={{cursor: 'pointer'}} onClick={refresh}>Refresh</span>
+                <span onClick={timerSwitch}>timer: {timerValue}</span>
             </div>
         );
     }

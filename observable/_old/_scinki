@@ -69,3 +69,9 @@
     }
 */
 s
+
+
+/*
+    const timer$ = Observable.interval(1000)
+          .map(i => i % 2).startWith(true);
+*/

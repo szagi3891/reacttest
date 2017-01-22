@@ -8,11 +8,7 @@ type ItemType = {
 
 class Store {
 
-    data: Map<string, BehaviorSubject<ItemType|null>>;
-
-    constructor() {
-        this.data = new Map();
-    }
+    data: Map<string, BehaviorSubject<ItemType|null>> = new Map();
 
     getUser(id: string) {
         const subject = this._getItem(id);
