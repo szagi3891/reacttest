@@ -29,3 +29,19 @@ https://gist.github.com/zxbodya/20c63681d45a049df3fc
 server side rendering
 
 
+
+reaktowe i rxowe kombinatory
+
+https://github.com/milankinen/react-combinators
+https://github.com/fdecampredon/rx-react
+https://github.com/acdlite/recompose/blob/master/docs/API.md
+
+
+skrole
+https://github.com/justinwoo/react-rxjs-flow/tree/dynamic-width-scroll-table
+https://github.com/justinwoo/react-rxjs-flow
+
+
+przykładowa apka react + rx
+https://github.com/giltig/rxfrf/blob/master/src/server/middleware/universalReactApp.js
+https://github.com/omerts/RtC/blob/master/src/shared/components/ColorPad/ColorPad.js

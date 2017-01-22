@@ -11,7 +11,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 
 type PropsInType = {};
 
-type PropsOutType = {
+type PropsOutType = {       //TODO - exact nie działa
     list: Array<string>,
     addNew: () => void,
     update: () => void,

@@ -87,7 +87,6 @@ export const createRxComponent = <PropsTypeIn: Object, PropsTypeOut: Object>(
                 .distinctUntilChanged(isEqualProps)
                 .subscribe((newInnerProps: PropsTypeOut) => {
                     this.innerProps = newInnerProps;
-
                     this.forceUpdate();
                 });
 

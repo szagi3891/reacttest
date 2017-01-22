@@ -14,7 +14,7 @@ type PropsInType = {|
     id: string,
 |};
 
-type PropsOutType = {
+type PropsOutType = {         //TODO - exact nie działa
     id: string,
     model: ItemType | null,
 };
