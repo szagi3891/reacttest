@@ -3,15 +3,16 @@ import { Observable, BehaviorSubject } from 'rxjs';
 
 class StoreTime {
 
-    time = Observable
-        .interval(1000)
+    //time = Observable.interval(1000)
+    time = Observable.timer(0, 1000)
         .map(value => ({
             count: value,
             current: new Date()
         }))
-        .publish()
-        //.publishReplay(1)
-        .refCount();
+
+        //.publish().refCount();
+        //.publish().refCount().startWith(0);
+        .publishReplay(1).refCount();
 
     getFormat() {
         return this.time.map((item) => {
