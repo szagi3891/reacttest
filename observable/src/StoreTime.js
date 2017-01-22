@@ -10,13 +10,21 @@ class StoreTime {
             current: new Date()
         }))
         .publish()
+        //.publishReplay(1)
         .refCount();
 
     getFormat() {
-        return this.time.map((item) => ({
-            count: item.count,
-            time: item.current.toString()
-        }));
+        return this.time.map((item) => {
+            const { current, count } = item;
+            const hours = current.getHours();
+            const minutes = current.getMinutes();
+            const seconds = current.getSeconds();
+
+            return {
+                count: count,
+                time:  `${hours}-${minutes}-${seconds}`
+            };
+        });
     }
 
     getTimestamp() {

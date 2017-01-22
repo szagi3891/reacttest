@@ -51,11 +51,11 @@ const mapToProps = (props$: Observable<PropsInType>): Observable<PropsOutType> =
             case 'mode1':
                 return StoreTime
                     .getFormat()
-                    .map(item => `mode1 - ${item.count} - ${item.time}`);
+                    .map(item => `${item.count} - ${item.time}`);
             case 'mode2':
                 return StoreTime
                     .getTimestamp()
-                    .map(item => `mode2 - ${item.count} - ${item.time}`);
+                    .map(item => `${item.count} - ${item.time}`);
             default:
                 //(value: empty);
                 return Observable.of(null);
@@ -90,8 +90,8 @@ const AppItem = (props: PropsOutType): React.Element<*> => {
             <div>
                 <span>name: {model.name}</span> &nbsp;&nbsp;
                 <span>age: {model.age}</span> &nbsp;&nbsp;
-                <span style={{cursor: 'pointer'}} onClick={refresh}>Refresh</span>
-                <span onClick={timerSwitch}>timer: {timerValue}</span>
+                <span style={{cursor: 'pointer'}} onClick={refresh}>Refresh</span> &nbsp;&nbsp;
+                <span style={{cursor:'pointer', border: '1px solid black'}} onClick={timerSwitch}>timer: {timerValue}</span>
             </div>
         );
     }
