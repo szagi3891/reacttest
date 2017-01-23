@@ -34,6 +34,7 @@ type PropsOutType = {
     message2: string | null,
     message3: string | null,
     messages: Array<MessageItem>,
+    submitPress: bool,
     sender1: (value: SyntheticEvent) => void,
     sender2: (value: SyntheticEvent) => void,
     sender3: (value: SyntheticEvent) => void,
@@ -48,6 +49,8 @@ const mapToProps = (props$: Observable<PropsInType>): Observable<PropsOutType> =
     const sender2 = senderSubject();
     const sender3 = senderSubject();
     const submit  = senderSubject();
+
+    const submit$ = submit.receive.mapTo(true).startWith(false);
 
     const message1$ = sender1.receive
         .map((e: SyntheticEvent): string => e.target instanceof HTMLInputElement ? e.target.value : '')
@@ -64,7 +67,7 @@ const mapToProps = (props$: Observable<PropsInType>): Observable<PropsOutType> =
         .startWith('')
         .map(value => value !== 'rr' ? 'Proszę wprowadzić frazę "rr"': null);
 
-    const messages$ = Observable.combineLatest(message1$, message2$, message3$, (message1, message2, message3) => {
+    const messages$: Observable<Array<MessageItem>> = Observable.combineLatest(message1$, message2$, message3$, (message1, message2, message3) => {
         const messages = [];
 
         if (message1 !== null) {
@@ -91,30 +94,65 @@ const mapToProps = (props$: Observable<PropsInType>): Observable<PropsOutType> =
         return messages;
     }).distinctUntilChanged();
 
-    const combineResult = (
-        message1: string | null,
-        message2: string | null,
-        message3: string | null,
-        messages: Array<MessageItem>,
-    ): PropsOutType => {
-        return {
-            message1: message1,
-            message2: message2,
-            message3: message3,
-            messages: messages,
-            sender1: sender1.send,
-            sender2: sender2.send,
-            sender3: sender3.send,
-            submit: submit.send
-        };
+    //submit$.switchMap(paused => true ? message1$ : Observable.never());
+/*
+    const addPause = (stream$) => {
+        return submit$.switchMap(submitPress => submitPress ? stream$ : Observable.never().startWith(null));
+    };
+*/
+
+    const addPause = (stream$) => {
+        return Observable.combineLatest(submit$, stream$, (submit: bool, stream: null | string): null | string => {
+            return (submit ? stream : null);
+        });
     };
 
+    //animacja true, 3sekundy, false
+    const showMessagesAnimation$: Observable<bool> = Observable
+        .timer(0, 3000)
+        .take(2)
+        .map(value => value === 0)
+        .do(val => console.warn('komunikty zbiorcze', val));
+
+    const showMessages$: Observable<bool> = submit$.switchMap(submitPress => {
+        return submitPress ? showMessagesAnimation$ : Observable.of(false);
+    });
+
+    const messagesOut$: Observable<Array<MessageItem>> = Observable.combineLatest(
+        showMessages$,
+        messages$, (
+            showMessages: bool,
+            messages: Array<MessageItem>
+        ): Array<MessageItem> => {
+        return showMessages ? messages : [];
+    });
+
+
     return Observable.combineLatest(
-        message1$,
-        message2$,
-        message3$,
-        messages$,
-        combineResult
+        addPause(message1$),
+        addPause(message2$),
+        addPause(message3$),
+        messagesOut$,
+        submit$,
+        (
+            message1: string | null,
+            message2: string | null,
+            message3: string | null,
+            messages: Array<MessageItem>,
+            submitPress: bool
+        ): PropsOutType => {
+            return {
+                message1: message1,
+                message2: message2,
+                message3: message3,
+                messages: messages,
+                sender1: sender1.send,
+                sender2: sender2.send,
+                sender3: sender3.send,
+                submitPress: submitPress,
+                submit: submit.send
+            };
+        }
     );
 }
 
@@ -159,10 +197,12 @@ const ReqenderMessages = (props: { messages: Array<MessageItem> }): React.Elemen
 
 const Form = (props: PropsOutType): React.Element<*> => {
 
-    const { message1, message2, message3, messages, sender1, sender2, sender3, submit} = props;
+    const { message1, message2, message3, messages, submitPress, sender1, sender2, sender3, submit} = props;
 
     return (
         <div className="test_form">
+
+            { submitPress ? "press" : "--"}<br/><br/>
 
             <RenderInput
                 key="input1"

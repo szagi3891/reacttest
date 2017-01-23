@@ -81,6 +81,7 @@ declare class rxjs$Observable<+T> {
   static empty<U>(): rxjs$Observable<U>;
 
   static interval(period: number): rxjs$Observable<number>;
+  static timer(start: number, period: number):  rxjs$Observable<number>;
 
   static merge<T, U>(
     source0: rxjs$Observable<T>,
