@@ -1,5 +1,5 @@
 /* @flow */
-import React from 'react';
+import React, { Component } from 'react';
 import  { Observable, BehaviorSubject } from 'rxjs';
 
 import { createRxComponent } from './Base';
@@ -78,29 +78,40 @@ const mapToProps = (props$: Observable<PropsInType>): Observable<PropsOutType> =
 
 //TODO - sprawdzić czy jak się utowrzy PropsTypeOut lekko zmodyfikowany, to czy rzuci błędem że jest niezgodność
 
-const AppItem = (props: PropsOutType): React.Element<*> => {
-    const { id, model, timerValue, timerSwitch } = props;
+class AppItem extends Component {
 
-    const refresh = () => Store.refresh(props.id);
+    props: PropsOutType;
 
-    console.info(`RENDER ITEM: ${id}`);
+    render() {
 
-    if (model) {
+//const AppItem = (props: PropsOutType): React.Element<*> => {
+        const { id, model, timerValue, timerSwitch } = this.props;
+
+
+        console.info(`RENDER ITEM: ${id}`);
+
+        if (model) {
+            return (
+                <div>
+                    <span>name: {model.name}</span> &nbsp;&nbsp;
+                    <span>age: {model.age}</span> &nbsp;&nbsp;
+                    <span style={{cursor: 'pointer'}} onClick={this._refresh.bind(this)}>Refresh</span> &nbsp;&nbsp;
+                    <span style={{cursor:'pointer', border: '1px solid black'}} onClick={timerSwitch}>timer: {timerValue}</span>
+                </div>
+            );
+        }
+
         return (
-            <div>
-                <span>name: {model.name}</span> &nbsp;&nbsp;
-                <span>age: {model.age}</span> &nbsp;&nbsp;
-                <span style={{cursor: 'pointer'}} onClick={refresh}>Refresh</span> &nbsp;&nbsp;
-                <span style={{cursor:'pointer', border: '1px solid black'}} onClick={timerSwitch}>timer: {timerValue}</span>
-            </div>
+            <div> {'loading ' + id} </div>
         );
     }
 
-    return (
-        <div> {'loading ' + id} </div>
-    );
-};
+    _refresh() {
+        const { id } = this.props;
+        Store.refresh(id);
+    }
+}
 
-const AppItemExport: (props: PropsInType) => React.Element<*> = createRxComponent(mapToProps, AppItem);
+const AppItemExport: (props: PropsInType) => React.Element<*> = createRxComponent(mapToProps, (props: PropsOutType): React.Element<*> => <AppItem {...props} />);
 
 export default AppItemExport;
