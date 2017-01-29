@@ -1,0 +1,22 @@
+{
+    "plugins": [
+        "flowtype",
+        "import",
+        "react"
+    ],
+    "settings": {
+        "flowtype": {
+            "onlyFilesWithFlowAnnotation": true
+        },
+        "import/parser": "babel-eslint"
+    },
+    "ecmaVersion": 6,
+    "parser": "babel-eslint",
+    "ecmaFeatures": {
+        "jsx": true,
+        "modules": true
+    },
+    "rules": {
+        "eqeqeq": [2, "smart"],
+    }
+}

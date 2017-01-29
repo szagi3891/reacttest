@@ -7,7 +7,14 @@ module.exports = {
     module: {
         loaders: [{
             test: /\.jsx?$/,
-            loaders: ['babel-loader']
+            use: [{
+                loader: 'babel-loader'
+            }, {
+                loader: 'eslint-loader',
+                options: {
+                    configFile: './.eslint'
+                }
+            }]
         }, {
             test: /\.svg$/,
             loaders: ['file-loader'],

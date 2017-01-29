@@ -14,18 +14,18 @@ type PropsType = {|
 |};
 
 class ListItems extends PureComponent {
-    
+
     props: PropsType;
 
     render(): React.Element<*> {
         const { list, books } = this.props;
-
+        const dd = 3;
         console.info('renderuję listę', list);
 
         return (
             <div>
                 <div className="list_list">
-                    {list.map(this._renderItem)} 
+                    {list.map(this._renderItem)}
                 </div>
                 <br/><br/>
                 <div>
@@ -43,7 +43,7 @@ class ListItems extends PureComponent {
             />
         );
     }
-    
+
     _renderBookItem(bookItem: BookModel): React.Element<*> {
         return (
             <BookItem
