@@ -149,7 +149,7 @@ class App extends PureComponent {
         this._clearTimer(this._timer2);
         this._clearTimer(this._timer3);
         this._clearTimer(this._timer4);
-        console.warn('ddd');
+        
         if (mode === 'update1') {
 
             this._timer1 = setInterval(() => {
