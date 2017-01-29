@@ -1,5 +1,5 @@
 var path = require('path');
-//var webpack = require('webpack');
+var webpack = require('webpack');
 const htmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
@@ -24,15 +24,10 @@ module.exports = {
         publicPath: '/',
         filename: 'bundle.js'
     },
-    plugins: [/*{
-        new webpack.optymalize.UglifyJsPlugin({
-            comments: true,
-            mangle: false,
-            compress: {
-                warnings: true
-            }
-        })
-    }*/
+    plugins: [
+        new webpack.optimize.UglifyJsPlugin({
+            comments: false
+        }),
         new htmlWebpackPlugin({
             template: './src/index.html'
         })
