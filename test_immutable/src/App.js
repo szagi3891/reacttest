@@ -18,7 +18,7 @@ type StateType = {|
 |};
 
 class Buttons extends PureComponent {
-    
+
     propsType: {|
         mode: modeType,
         updateMode: (newMode: modeType) => void,
@@ -49,7 +49,7 @@ class Buttons extends PureComponent {
             <button {...attr}>{label}</button>
         );
     }
-    
+
     _onClick0() {
         this.props.updateMode('idle');
     }
@@ -92,7 +92,7 @@ class App extends PureComponent {
             list: this._getInitList(),
             books: this._getInitBook()
         };
-        
+
         this._refreshTimers();
 
         const bo = new BookModel({
@@ -113,7 +113,7 @@ class App extends PureComponent {
 
     render() {
         const {mode, list, books} = this.state;
-        
+
         console.warn('główny render', list);
 
         return (
@@ -125,7 +125,7 @@ class App extends PureComponent {
                 <p className="App-intro">
                     To get started, edit <code>src/App.js</code> and save to reload.
                 </p>
-                
+
                 <Buttons
                     mode={mode}
                     updateMode={this._updateMode.bind(this)}
@@ -144,14 +144,14 @@ class App extends PureComponent {
 
     _refreshTimers() {
         const { mode } = this.state;
-        
+
         this._clearTimer(this._timer1);
         this._clearTimer(this._timer2);
         this._clearTimer(this._timer3);
         this._clearTimer(this._timer4);
-        
+        console.warn('ddd');
         if (mode === 'update1') {
-            
+
             this._timer1 = setInterval(() => {
                 console.info('timer1 exec');
                 const newList = this.state.list.update(3, (item: UserModel): UserModel => {
@@ -178,7 +178,7 @@ class App extends PureComponent {
                 });
             }, 7000);
         }
-        
+
         if (mode === 'update2') {
             this._timer3 = setInterval(() => {
                 console.info('timer3 exec');
@@ -193,7 +193,7 @@ class App extends PureComponent {
                 });
             }, 5000);
         }
-        
+
         if (mode === 'update3') {
             this._timer4 = setInterval(() => {
                 console.info('timer4 exec');

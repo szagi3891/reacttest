@@ -1,5 +1,6 @@
 var path = require('path');
 //var webpack = require('webpack');
+const htmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     entry: './src/index.js',
@@ -31,5 +32,9 @@ module.exports = {
                 warnings: true
             }
         })
-    }*/]
+    }*/
+        new htmlWebpackPlugin({
+            template: './src/index.html'
+        })
+    ]
 };
