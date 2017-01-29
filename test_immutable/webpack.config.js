@@ -40,3 +40,21 @@ module.exports = {
         })
     ]
 };
+
+/*
+npm install postcss-loader autoprefixer --save-dev
+
+var autoprefixer = require('autoprefixer');
+
+module.exports = {
+  module: {
+    loaders: [{
+      test: /\.css$/,
+      loader: 'css-loader!postcss-loader'
+    }]
+  },
+  postcss: [
+    autoprefixer()
+  ]
+};
+*/
