@@ -24,4 +24,12 @@ class ListaItem extends PureComponent {
     }
 }
 
+const dead = () => {
+    return 'ta funkcja powinna zostać usunięta uu877';
+};
+
+export {
+    dead
+};
+
 export default ListaItem;

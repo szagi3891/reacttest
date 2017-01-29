@@ -3,8 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "css-loader": "^0.26.1",
     "flow-bin": "^0.36.0",
-    "react-scripts": "0.7.0"
+    "react-scripts": "0.7.0",
+    "rimraf": "^2.5.4",
+    "style-loader": "^0.13.1",
+    "webpack": "^2.2.0"
   },
   "dependencies": {
     "autobind": "^1.0.3",
@@ -15,10 +19,8 @@
     "react-dom": "^15.4.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
+    "build": "rimraf dist && webpack",
+    "dev": "webpack-dev-server",
     "flow-status": "flow status"
   }
 }
