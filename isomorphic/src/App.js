@@ -7,6 +7,8 @@ class App extends Component {
     constructor(props) {
         super(props);
 
+        console.log('utworzono egzemtlarz klasy App');
+
         this.state = {
             test: 1,
             test2: 2
