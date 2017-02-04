@@ -7,4 +7,4 @@ const app = <App />;
 
 setTimeout(() => {
   console.warn(renderToString(app));
-}, 2000);
+}, 5000);
