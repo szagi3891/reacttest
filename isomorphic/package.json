@@ -21,8 +21,9 @@
     "react-dom": "^15.4.2"
   },
   "scripts": {
-    "build": "rimraf dist && webpack && webpack --config webpack.node.config.js",
+    "build": "rimraf dist && rimraf dist_server && webpack && webpack --config webpack.node.config.js",
     "dev": "webpack-dev-server --content-base dist",
-    "flow-status": "flow status"
+    "flow-status": "flow status",
+    "run_isomorphic": "node ./dist_server/bundle-server.js"
   }
 }
