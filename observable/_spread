@@ -1,0 +1,27 @@
+type TIn = {
+    name: string
+};
+
+type TOut = {
+	len: number
+};
+
+function cos<BaseT>(inData: BaseT & TIn): BaseT & TOut {
+	const {name, ...rest} = inData;
+  	return {
+      	len: name.length,
+      	...rest
+    };
+}
+
+const dd = {
+	name: 'aasda',
+  	gg: 32
+};
+
+const dd2 = cos(dd);
+
+dd2.len;
+dd2.name;
+dd2.gg;
+dd2.ggf;
