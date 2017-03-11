@@ -82,7 +82,7 @@ class AppItem extends Component {
 
     props: PropsOutType;
 
-    render() {
+    render(): React.Element<*> {
 
 //const AppItem = (props: PropsOutType): React.Element<*> => {
         const { id, model, timerValue, timerSwitch } = this.props;

@@ -8,6 +8,7 @@ import Suggester from './Suggester';
 import Form from './Form';
 import { createRxComponent } from './Base';
 import { Observable, BehaviorSubject } from 'rxjs';
+import TooltipContainer from './TooltipContainer';
 
 type PropsInType = {};
 
@@ -69,6 +70,12 @@ class App extends Component {
                 <Suggester />
 
                 <div style={{border: "1px solid black", padding: "20px"}}>
+                    <TooltipContainer />
+                </div>
+
+                <br/>
+
+                <div style={{border: "1px solid black", padding: "20px"}}>
                     <Form />
                 </div>
 
@@ -77,6 +84,7 @@ class App extends Component {
                 <div style={{border: "1px solid black", padding: "20px"}}>
                     <Form />
                 </div>
+
             </div>
         );
     }
