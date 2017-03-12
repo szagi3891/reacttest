@@ -41,6 +41,8 @@ const mapToProps = (props$: Observable<PropsInType>): Observable<PropsOutType> =
             case 'mode2':
                 timerMode$.next('off');
                 break;
+            default:
+                timerMode$.next('off');
         }
     };
 

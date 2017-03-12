@@ -1,5 +1,5 @@
 /* @flow */
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
 
 class StoreTime {
 
