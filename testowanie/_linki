@@ -2,3 +2,31 @@ https://hackernoon.com/testing-react-components-with-jest-and-enzyme-41d592c174f
 
 
 https://camjackson.net/post/9-things-every-reactjs-beginner-should-know
+
+
+package {
+  scripts: {
+    "test": "jest --coverage"
+    "test:watch": "npm run test -- --watch",
+  }
+}
+
+yarn test:watch
+
+
+Watch Usage
+ > Press a to run all tests.
+ > Press o to only run tests related to changed files.
+ > Press p to filter by a filename regex pattern.
+ > Press q to quit watch mode.
+ > Press Enter to trigger a test run.
+
+
+decribe("describe", () => {
+
+  it("jakis przypadek", () => {
+
+    expect(cpsssadsad).tpEqual(jakas wartosc wzorcowa);
+
+  });
+});
