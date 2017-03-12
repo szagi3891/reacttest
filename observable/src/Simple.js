@@ -3,7 +3,8 @@
 import React, { Component } from 'react';
 
 type PropsType = {|
-    title: string,
+    title?: string,
+    onClick?: (imageTitle: string) => void,
 |};
 
 class Simple extends Component {
@@ -37,8 +38,17 @@ class Simple extends Component {
         return (
             <div>
                 { title }
+                <button onClick={this._onClick.bind(this)}>kliknij</button> 
             </div>
         );
+    }
+
+    _onClick() {
+        const { onClick } = this.props;
+
+        if (onClick) {
+            onClick(window.ImageConst);
+        }
     }
 }
 
