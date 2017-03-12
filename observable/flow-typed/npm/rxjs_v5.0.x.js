@@ -572,13 +572,13 @@ declare class rxjs$Observable<+T> {
 
   withLatestFrom<A, B>(
     a: rxjs$Observable<A>,
-    resultSelector: (a: A) => B,
+    resultSelector: (t: T, a: A) => B,
   ): rxjs$Observable<B>;
 
   withLatestFrom<A, B, C>(
     a: rxjs$Observable<A>,
     b: rxjs$Observable<B>,
-    resultSelector: (a: A, b: B) => C,
+    resultSelector: (t: T, a: A, b: B) => C,
   ): rxjs$Observable<C>;
 
   withLatestFrom<A, B, C, D>(

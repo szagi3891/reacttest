@@ -70,7 +70,6 @@ const getOverlay = (props: PropsOutType): React.Element<*> | null => {
 
 const Tooltip = (props: PropsOutType): React.Element<*> => {
     const { trigger } = props;
-    console.warn('tooltip render');                               //TODO
     return (
         <div>
           <div onClick={trigger}>Trigger</div>

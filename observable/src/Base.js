@@ -74,23 +74,48 @@ export const createRxComponent = <PropsTypeIn: Object, PropsTypeOut: Object>(
 
         props: PropsTypeIn;
 
-        innerProps: PropsTypeOut | null = null;
+        mounted$: Subject<bool> = new Subject();
         receive$: Subject<PropsTypeIn> = new Subject();
-        subscription: Subscription | null = null;
+
+        subscription: Subscription;
+
+        innerProps: PropsTypeOut;
+
+        constructor(props: PropsTypeIn) {
+            super(props);
+
+            type PropsSubscribeType = {
+                props: PropsTypeOut,
+                mounted: bool
+            };
+
+            const newProps$: Observable<PropsTypeOut> = mapProps(this.receive$.asObservable())
+                .distinctUntilChanged(isEqualProps);
+
+            const mounted$: Observable<bool> = this.mounted$.startWith(false);
+
+            this.subscription = newProps$
+                .withLatestFrom(mounted$, (props: PropsTypeOut, mounted: bool): PropsSubscribeType => ({
+                      props,
+                      mounted
+                }))
+                .subscribe((propsSubscribe: PropsSubscribeType) => {
+                    this.innerProps = propsSubscribe.props;
+
+                    if (propsSubscribe.mounted) {
+                        this.forceUpdate();
+                    }
+                });
+
+            this.receive$.next(this.props);
+        }
 
         shouldComponentUpdate() {
             return false;
         }
 
         componentWillMount() {
-            this.subscription = mapProps(this.receive$.asObservable())
-                .distinctUntilChanged(isEqualProps)
-                .subscribe((newInnerProps: PropsTypeOut) => {
-                    this.innerProps = newInnerProps;
-                    this.forceUpdate();
-                });
-
-            this.receive$.next(this.props);
+            this.mounted$.next(true);
         }
 
         componentWillReceiveProps(nextProps: PropsTypeIn) {
@@ -98,16 +123,11 @@ export const createRxComponent = <PropsTypeIn: Object, PropsTypeOut: Object>(
         }
 
         componentWillUnmount() {
-            if (this.subscription) {
-                this.subscription.unsubscribe();
-            }
+            this.mounted$.next(false);
+            this.subscription.unsubscribe();
         }
 
-        render(): React.Element<*> | null {
-            if (this.innerProps === null) {
-                return null;
-            }
-
+        render(): React.Element<*> {
             return (
                 <InnerComponent {...this.innerProps} />
             );
