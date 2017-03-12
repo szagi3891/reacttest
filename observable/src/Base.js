@@ -70,7 +70,7 @@ export const createRxComponent = <PropsTypeIn: Object, PropsTypeOut: Object>(
     InnerComponent: FuncComponentType<PropsTypeOut>
 ): FuncComponentType<PropsTypeIn> => {
 
-    class RxComponent extends Component<void, PropsTypeIn, void> {
+    class RxComponent extends Component {
 
         props: PropsTypeIn;
 

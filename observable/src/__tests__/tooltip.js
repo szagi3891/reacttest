@@ -1,4 +1,6 @@
-import '../Tooltip';
+import Tooltip from '../Tooltip';
+//import { mount } from 'enzyme';
+//import sinon from 'sinon';
 
 describe('tooltip', () => {
 
@@ -6,4 +8,12 @@ describe('tooltip', () => {
 
         expect(true).toEqual(true);
     });
+/*
+    it('test montowania', () => {
+
+        sinon.spy(Tooltip.prototype, 'componentDidMount');
+        const wrapper = mount(<Tooltip />);
+        expect(Tooltip.prototype.componentDidMount.calledOnce).to.equal(true);
+    });
+*/
 });

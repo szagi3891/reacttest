@@ -3,8 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "enzyme": "^2.7.1",
     "flow-bin": "^0.41.0",
-    "react-scripts": "0.8.4"
+    "react-addons-test-utils": "^15.4.2",
+    "react-scripts": "0.8.4",
+    "sinon": "^1.17.7"
   },
   "dependencies": {
     "immutable": "^3.8.1",
