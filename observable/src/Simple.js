@@ -36,9 +36,9 @@ class Simple extends Component {
         const { title } = this.props;
 
         return (
-            <div>
+            <div className="SimpleWrapper">
                 { title }
-                <button onClick={this._onClick.bind(this)}>kliknij</button> 
+                <button onClick={this._onClick.bind(this)}>kliknij</button>
             </div>
         );
     }
