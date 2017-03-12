@@ -1,0 +1,9 @@
+exports[`simple snapshot 1`] = `
+<div>
+  baz
+  <button
+    onClick={[Function]}>
+    kliknij
+  </button>
+</div>
+`;

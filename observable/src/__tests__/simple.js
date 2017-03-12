@@ -3,6 +3,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
+import renderer from 'react-test-renderer';
 import Simple from '../Simple';
 
 describe('simple', () => {
@@ -37,5 +38,10 @@ describe('simple', () => {
         expect(messRet).toEqual("Jakis tajny tekst");
 
         //http://airbnb.io/enzyme/docs/api/mount.html
+    });
+
+    it('snapshot', () => {
+        const tree = renderer.create(<Simple title="baz" />).toJSON();
+        expect(tree).toMatchSnapshot();
     });
 });
