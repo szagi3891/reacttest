@@ -128,9 +128,13 @@ export const createRxComponent = <PropsTypeIn: Object, PropsTypeOut: Object>(
         }
 
         render(): React.Element<*> {
-            return (
-                <InnerComponent {...this.innerProps} />
-            );
+            if (this.innerProps) {
+                return (
+                    <InnerComponent {...this.innerProps} />
+                );
+            } else {
+                throw Error('Spodziewano się pierwszych propsów ze strumienia');
+            }
         }
     };
 
