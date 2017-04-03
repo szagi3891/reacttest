@@ -4,11 +4,8 @@ import React, { Component } from 'react';
 import './App.css';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { createRxComponent } from './Base';
+import Store from './Store';
 
-type PageItemType = {
-    title: string,
-    body: string
-};
 
 type PropsInType = {|
     init: {
@@ -24,24 +21,15 @@ type PropsOutType = {|       //TODO - exact nie działa
 const mapToProps = (props$: Observable<PropsInType>): Observable<PropsOutType> => {
     return props$.take(1).switchMap(props => {
         console.info('!!!! inicjujace propsy', props);
-                                        //stor na strony statyczne
-        const data = new Map();
 
         //TODO - w tym miejscu można inicjujące propsy wpisać do stor-a
 
         const interval$ = Observable.interval(1000).map(value => value + 1).startWith(0);
 
-        return interval$.map((intervalValue: number) => {
-            console.warn('pierwszy tick');
-
+        return interval$.map((interval: number) => {
+            console.warn('tick');
             return {
-                get : (pageId: string): Observable<PageItemType> => {
-                    return Observable.of({
-                        title: 'test33',
-                        body: 'test33'
-                    });
-                },
-                interval: intervalValue
+                interval
             };
         });
     });
