@@ -7,6 +7,9 @@ import './index.css';
 
 const root = document.getElementById('root');
 
+    //czytaj inicjace dane z tego atrybutu
+//root.getAttribute('data-init');
+
 const initData = {
     page32 : {                          //      /page32
         title: "page 32 title",
