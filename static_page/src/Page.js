@@ -19,7 +19,10 @@ type PropsOutType = {|       //TODO - exact nie działa
 const mapToProps = (props$: Observable<PropsInType>): Observable<PropsOutType> => {
     return props$
         .map((props: PropsInType): string => props.pageid)
-        .switchMap(pageid => Store.get(pageid));
+        .switchMap(pageid => Store.get(pageid))
+        .map((pagedata: PageItemType | null): PropsOutType => ({
+            pagedata
+        }));
 };
 
 const PagepFn = (props: PropsOutType): React.Element<*> => {

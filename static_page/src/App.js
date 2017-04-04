@@ -11,7 +11,7 @@ type PropsInType = {|
 |};
 
 type PropsOutType = {|       //TODO - exact nie działa
-    interval: Observable<number>,
+    interval: number,
 |};
 
 const mapToProps = (props$: Observable<PropsInType>): Observable<PropsOutType> => {

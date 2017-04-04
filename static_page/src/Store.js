@@ -15,7 +15,7 @@ class Store {
         console.warn('inicjuj stora jakimiś danymi');
     }
  
-    get(pageId: string): Observable<PageItemType> {
+    get(pageId: string): Observable<PageItemType|null> {
 
         const page$ = this.data.get(pageId);
         if (page$) {
