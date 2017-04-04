@@ -8,20 +8,17 @@ export type PageItemType = {
 };
 
 export type EditingType = {
+    pageid: string,
     title: string,
     body: string,
     isSaving: bool,         //określa czy obecnie trwa akcja zapisująca nową zawartość na serwerze
 };
 
-export type PageContextType = {
-    page: PageItemType,
-    editing: EditingType | null,
-};
-
 class Store {
 
-    user: BehaviorSubject<string | null> = new BehaviorSubject(null);
-    data: Map<string, BehaviorSubject<PageContextType|null>> = new Map();
+    currentEdited: BehaviorSubject<EditingType | null> = new BehaviorSubject(null);     //określa aktualnie edytowaną treść
+    user: BehaviorSubject<string | null> = new BehaviorSubject(null);                   //określa aktualnie zalogowanego użytkownika
+    data: Map<string, BehaviorSubject<PageItemType|null>> = new Map();
 
     constructor() {
                             //symulowane zalogowanie i wylogowanie
@@ -38,7 +35,27 @@ class Store {
         console.warn('inicjuj stora jakimiś danymi');
     }
  
-    get(pageId: string): Observable<PageContextType|null> {
+    setEdit(pageid: string) {
+        const item = this.data.get(pageid);
+        if (item) {
+            const itemValue = item.getValue();
+
+            if (itemValue) {
+                this.currentEdited.next({
+                    pageid,
+                    title: itemValue.title,
+                    body: itemValue.body,
+                    isSaving: false
+                });
+            }
+        }
+    }
+
+    turnOffEdit() {
+        this.currentEdited.next(null);
+    }
+
+    get(pageId: string): Observable<PageItemType|null> {
 
         const page$ = this.data.get(pageId);
         if (page$) {
@@ -49,11 +66,8 @@ class Store {
 
         setTimeout(() => {
             newPage$.next({
-                page: {
-                    title: 'test33',
-                    body: 'test33',
-                },
-                editing: null,
+                title: 'test33',
+                body: 'test33',
             });
         }, 2000);
 
@@ -64,6 +78,10 @@ class Store {
 
     getCurrentUser(): Observable<string | null> {
         return this.user.asObservable();
+    }
+
+    getCurrentEdited(): Observable<EditingType | null> {
+        return this.currentEdited.asObservable();
     }
 }
 
