@@ -12,31 +12,46 @@ type PropsInType = {|
 
 type PropsOutType = {|       //TODO - exact nie działa
     interval: number,
+    currentUser: string | null,
 |};
 
 const mapToProps = (props$: Observable<PropsInType>): Observable<PropsOutType> => {
-    console.info('!!!! inicjujace propsy');
 
-    //TODO - w tym miejscu można inicjujące propsy wpisać do stor-a
+    const currentUser$ = Store.getCurrentUser();
 
     const interval$ = Observable.interval(1000).map(value => value + 1).startWith(0);
 
-    return interval$.map((interval: number) => {
-        console.warn('tick');
-        return {
-            interval
-        };
-    });
+    return Observable.combineLatest(currentUser$, interval$, (currentUser, interval) => ({
+        interval,
+        currentUser
+    }));
+};
+
+const renderCurrentUser = (currentUser: string | null): React.Element<*> => {
+    if (currentUser === null) {
+        return (
+            <span>
+                Użytkownik niezalogowany
+            </span>
+        );
+    } else {
+        return (
+            <span>
+                Aktualnie zalogowany użytkownik: {currentUser}
+            </span>
+        );
+    }
 };
 
 const AppFn = (props: PropsOutType): React.Element<*> => {
-    console.info('mam takie propsy', props);
-    const { interval } = props;
+    const { interval, currentUser } = props;
 
     return (
         <div className="App">
-            dadas - funkcyjnie, {interval}
-            <Page pageid="page32" />
+            dadas - funkcyjnie, {interval}, { renderCurrentUser(currentUser) }
+            <Page
+                pageid="page32"
+            />
         </div>
     );
 };
