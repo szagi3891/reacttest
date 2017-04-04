@@ -5,3 +5,14 @@
 [libs]
 
 [options]
+module.system.node.resolve_dirname=node_modules
+module.system.node.resolve_dirname=src
+module.system.node.resolve_dirname=flow-typed
+
+esproposal.class_instance_fields=enable
+esproposal.class_static_fields=enable
+esproposal.decorators=ignore
+
+unsafe.enable_getters_and_setters=true
+
+sharedmemory.hash_table_pow=19

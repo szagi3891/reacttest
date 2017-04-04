@@ -5,13 +5,12 @@ import './App.css';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { createRxComponent } from './Base';
 import Store from './Store';
-
+import Page from './Page';
 
 type PropsInType = {|
 |};
 
 type PropsOutType = {|       //TODO - exact nie działa
-    get: (pageId: string) => Observable<PageItemType>,
     interval: Observable<number>,
 |};
 
@@ -37,6 +36,7 @@ const AppFn = (props: PropsOutType): React.Element<*> => {
     return (
         <div className="App">
             dadas - funkcyjnie, {interval}
+            <Page pageid="page32" />
         </div>
     );
 };
