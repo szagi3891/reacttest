@@ -8,9 +8,6 @@ import Store from './Store';
 
 
 type PropsInType = {|
-    init: {
-        [string]: PageItemType
-    },
 |};
 
 type PropsOutType = {|       //TODO - exact nie działa
@@ -19,19 +16,17 @@ type PropsOutType = {|       //TODO - exact nie działa
 |};
 
 const mapToProps = (props$: Observable<PropsInType>): Observable<PropsOutType> => {
-    return props$.take(1).switchMap(props => {
-        console.info('!!!! inicjujace propsy', props);
+    console.info('!!!! inicjujace propsy');
 
-        //TODO - w tym miejscu można inicjujące propsy wpisać do stor-a
+    //TODO - w tym miejscu można inicjujące propsy wpisać do stor-a
 
-        const interval$ = Observable.interval(1000).map(value => value + 1).startWith(0);
+    const interval$ = Observable.interval(1000).map(value => value + 1).startWith(0);
 
-        return interval$.map((interval: number) => {
-            console.warn('tick');
-            return {
-                interval
-            };
-        });
+    return interval$.map((interval: number) => {
+        console.warn('tick');
+        return {
+            interval
+        };
     });
 };
 

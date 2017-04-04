@@ -4,6 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import './index.css';
+import Store from './Store';
 
 const root = document.getElementById('root');
 
@@ -17,11 +18,6 @@ const initData = {
     }
 };
 
-const component = (
-    <App
-        init={initData}
-        //dasda="12"
-    />
-);
+Store.init(initData);
 
-ReactDOM.render(component, root);
+ReactDOM.render(<App />, root);
