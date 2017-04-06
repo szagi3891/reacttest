@@ -180,12 +180,26 @@ foreach(numbers, console.log);
 https://jsfiddle.net/fdmx0hyv/8/
 
 cons    = (f,r) => (c) => c ? f : r 
+first   = (c) => c ? c(true) : null
+rest    = (c) => c ? c(false) : null
+range   = (min, max) => min < max ? cons(min, range(min+1,max)) : cons(max,null)
+map     = (xs,f) => f && xs ? cons(f(first(xs)), map(rest(xs),f)) : null
+foreach = function(xs,f) {if(f && xs) { f(first(xs)); foreach(rest(xs),f) }}
+reverse = (xs, acc) => !xs ? acc : reverse(rest(xs), cons(first(xs),acc))
+
+
+po lekkim odśmieceniu
+
+cons    = (f,r) => (c) => c ? f : r 
 first   = (c) => c(true)
 rest    = (c) => c(false)
 range   = (min, max) => min < max ? cons(min, range(min+1,max)) : cons(max,null)
 map     = (xs,f) => xs ? cons(f(first(xs)), map(rest(xs),f)) : null
-foreach = (xs,f) => { if(xs) { f(first(xs)); foreach(rest(xs),f) }}
-reverse = (xs, acc) => !xs ? acc : reverse(rest(xs), cons(first(xs),acc))
+foreach = (xs,f) => {if(xs) { f(first(xs)); foreach(rest(xs),f) }}
+push    = (xs, l) => xs ? cons(first(xs), push(rest(xs), l)): cons(l, null)
+reverse = (xs) => xs ? push(reverse(rest(xs)), first(xs)) : null
+
+
 
 
 
