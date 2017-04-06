@@ -188,6 +188,17 @@ foreach = (xs,f) => { if(xs) { f(first(xs)); foreach(rest(xs),f) }}
 reverse = (xs, acc) => !xs ? acc : reverse(rest(xs), cons(first(xs),acc))
 
 
+
+https://jsfiddle.net/3spujam4/
+
+range = (a, b) => f => a < b ? f(a, range(a + 1, b)) : f(b, null)
+map = (l, func) => !l ? null : f => l((elem, rest) => f(func(elem), map(rest, func)))
+append = (l, to_add) => f => !l ? f(to_add, null) : l((elem, rest) => f(elem, append(rest, to_add)))
+reverse = l => !l ? null : f => l((elem, rest) => append(reverse(rest), elem)(f))
+foreach = (l, func) => !l ? null : l((elem, rest) => {func(elem); foreach(rest, func)})
+
+
+
 https://codepen.io/Jedrski/pen/xqNpZJ?editors=0011
 
 function range(from, to) {
@@ -215,5 +226,13 @@ function foreach(stream, f) {
 
 
 http://www.jsfuck.com/
+
+
+
+
+const range = (a, b) => (f) => { for (let i = a; a <= b; a++) f(a) };
+const foreach = (stream, f) => stream(f);
+const map = (stream, f) => (g) => stream((i) => g(f(i)));
+
 
 
