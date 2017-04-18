@@ -1,3 +1,28 @@
+import React from 'react';
+import App from './App';
+
+import favicon from './favicon.ico';
+
+const Html = () => (
+    <html lang="en">
+        <head>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <link rel="shortcut icon" href={favicon} />
+            <title>React App</title>
+        </head>
+        <body>
+            <div id='root'>
+                <App />
+            </div>
+            <script type='text/javascript' src='/index.js' />
+        </body>
+    </html>
+);
+
+export default Html;
+
+/*
 <!doctype html>
 <html lang="en">
   <head>
@@ -29,3 +54,15 @@
     -->
   </body>
 </html>
+
+export default function Html(props) {
+  return (<html>
+    <head></head>
+    <body>
+      <div id='content'><App {...props} /></div>
+      <script type='text/javascript' dangerouslySetInnerHTML={{__html: 'var APP_PROPS = ' + JSON.stringify(props) + ';'}} />
+      <script type='text/javascript' src='/js/bundle.js' />
+    </body>
+  </html>);
+}
+*/

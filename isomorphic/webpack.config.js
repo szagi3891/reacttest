@@ -4,26 +4,14 @@ const htmlWebpackPlugin = require('html-webpack-plugin');
 
 function getEntry(mode) {
     return mode === 'client' ? './src/index.js' : './src/server.js';
-/*
-    if (mode === 'client') {
-        return {
-            'client' : './src/index.js'
-        };
-    } else {
-        return {
-            'server': './src/server.js'
-        };
-    }
-*/
 }
 
 function getOutput(mode) {
-    var filename = mode === 'client' ? 'index.js' : 'server.js';
+    var filename = mode === 'client' ? 'index.js' : '../server.js';
 
     return {
-        path: path.join(__dirname, 'dist'),
-        publicPath: '/',
-        //filename: 'bundle-[name].js',
+        path: path.join(__dirname, 'dist/static'),
+        publicPath: '/static/',
         filename: filename,
         pathinfo: true
     };
@@ -35,12 +23,6 @@ function getPlugins(mode) {
             comments: false
         })
     ];
-
-    if (mode === 'client') {
-        out.push(new htmlWebpackPlugin({
-            template: './public/index.html'
-        }));
-    }
 
     return out;
 }
@@ -90,7 +72,7 @@ function getLoaders(mode) {
     },
     getCssLoader(mode),
     {
-        test: /\.(png|jpg|gif)$/,
+        test: /\.(png|jpg|gif|ico)$/,
         loaders: ['file-loader'],
     }];
 }
@@ -110,6 +92,12 @@ function make(mode) {
     };
 }
 
+module.exports = [
+    make('client'),
+    make('server')
+];
+
+
 /*
 npm install postcss-loader autoprefixer --save-dev
 
@@ -128,8 +116,3 @@ module.exports = {
 };
 */
 
-
-module.exports = [
-    make('client'),
-    make('server')
-];
