@@ -20,19 +20,6 @@ class App extends Component {
     this.setState({
       test : 111
     });
-    setTimeout(() => {
-        console.warn('zaszedł timeout');
-
-        this.setState({
-            test2: 222
-        });
-        this._trzecia = 333;
-    }, 1000);
-
-    setTimeout(() => {
-        console.warn('force update');
-        this.forceUpdate();
-    }, 2000);
   }
 
   render() {

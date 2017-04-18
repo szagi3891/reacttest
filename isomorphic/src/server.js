@@ -11,4 +11,4 @@ console.log("\n\n\n");
 
 setTimeout(() => {
   console.warn(renderToString(app));
-}, 10000);
+}, 1000);
