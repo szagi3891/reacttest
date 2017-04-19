@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
     res.end(renderToString(<Html />));
 });
 
-app.use(Express.static('static'));
+app.use('/static', Express.static('static'));
 
 app.listen(port, function () {
     console.log(`Example app listening on port ${port}!`);

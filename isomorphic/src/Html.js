@@ -9,13 +9,14 @@ const Html = () => (
             <meta charset="utf-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <link rel="shortcut icon" href={favicon} />
+            <link rel="stylesheet" href="/static/styles.css" type="text/css" media="screen" />
             <title>React App</title>
         </head>
         <body>
             <div id='root'>
                 <App />
             </div>
-            <script type='text/javascript' src='/index.js' />
+            <script type='text/javascript' src='/static/index.js' />
         </body>
     </html>
 );

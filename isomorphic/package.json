@@ -18,13 +18,14 @@
   },
   "dependencies": {
     "express": "^4.15.2",
+    "extract-text-webpack-plugin": "^2.1.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "webpack-dev-server": "^2.4.2"
   },
   "scripts": {
     "build": "rimraf dist && webpack --config webpack.config.js",
-    "run_isomorphic": "node ./dist/server.js",
+    "run": "cd dist && node ./server.js",
     "dev": "webpack-dev-server --content-base dist",
     "flow-status": "flow status"
   }

@@ -1,6 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 const htmlWebpackPlugin = require('html-webpack-plugin');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 function getEntry(mode) {
     return mode === 'client' ? './src/index.js' : './src/server.js';
@@ -24,6 +25,10 @@ function getPlugins(mode) {
         })
     ];
 
+    if (mode === 'client') {
+        out.push(new ExtractTextPlugin('styles.css'));
+    }
+
     return out;
 }
 
@@ -44,7 +49,11 @@ function getCssLoader(mode) {
     if (mode === 'client') {
         return {
             test: /\.css$/,
-            use: [ 'style-loader', 'css-loader' ]
+            //use: [ 'style-loader', 'css-loader' ]
+            use: ExtractTextPlugin.extract({
+                fallback: "style-loader",
+                use: "css-loader"
+            })
         };
     } else {
         return {
