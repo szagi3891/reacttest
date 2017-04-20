@@ -1,105 +1,88 @@
-var path = require('path');
-var webpack = require('webpack');
+const path = require('path');
+const webpack = require('webpack');
 const htmlWebpackPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-function getEntry(mode) {
-    return mode === 'client' ? './src/index.js' : './src/server.js';
-}
 
-function getOutput(mode) {
-    var filename = mode === 'client' ? 'index.js' : '../server.js';
+const getPluginUglify = () => new webpack.optimize.UglifyJsPlugin({ comments: false });
 
-    return {
-        path: path.join(__dirname, 'dist/static'),
-        publicPath: '/static/',
-        filename: filename,
-        pathinfo: true
-    };
-}
+const getPluginCss = () => new ExtractTextPlugin('styles.css');
 
-function getPlugins(mode) {
-    var out = [
-        new webpack.optimize.UglifyJsPlugin({
-            comments: false
-        })
-    ];
-
-    if (mode === 'client') {
-        out.push(new ExtractTextPlugin('styles.css'));
+const getNodeConfig = () => ({
+    target: 'node',
+    node: {
+        __filename: true
     }
+});
 
-    return out;
-}
+const getNode = (mode) => mode === 'client' ? {} : getNodeConfig();
 
-function getNode(mode) {
-    if (mode === 'client') {
-        return {};
-    }
+const getLoaderSvg = () => ({
+    test: /\.svg$/,
+    loaders: ['file-loader']
+});
 
-    return {
-        target: 'node',
-        node: {
-            __filename: true
+const getLoaderJsx = () => ({
+    test: /\.jsx?$/,
+    use: [{
+        loader: 'babel-loader'
+    }/*, {
+        loader: 'eslint-loader',
+        options: {
+            configFile: './.eslint'
         }
-    };
-}
+    }*/]
+});
 
-function getCssLoader(mode) {
-    if (mode === 'client') {
-        return {
-            test: /\.css$/,
-            //use: [ 'style-loader', 'css-loader' ]
-            use: ExtractTextPlugin.extract({
-                fallback: "style-loader",
-                use: "css-loader"
-            })
-        };
-    } else {
-        return {
-            test: /\.css$/,
-            //use: 'null'
-            loader: 'css-loader/locals?modules',
-        };
-    }
-}
+const getLoaderCssClient = () => ({
+    test: /\.css$/,
+    //use: [ 'style-loader', 'css-loader' ]
+    use: ExtractTextPlugin.extract({
+        fallback: "style-loader",
+        use: "css-loader"
+    })
+});
 
-function getLoaders(mode) {
-    return [{
-        test: /\.jsx?$/,
-        use: [{
-            loader: 'babel-loader'
-        }/*, {
-            loader: 'eslint-loader',
-            options: {
-                configFile: './.eslint'
-            }
-        }*/]
-    }, {
-        test: /\.svg$/,
-        loaders: ['file-loader'],
-    },
-    getCssLoader(mode),
-    {
-        test: /\.(png|jpg|gif|ico)$/,
-        loaders: ['file-loader'],
-    }];
-}
+const getLoaderCssNode = () => ({
+    test: /\.css$/,
+    //use: 'null'
+    loader: 'css-loader/locals?modules',
+});
 
-function make(mode) {
-    var nodeConf = getNode(mode);
+const getLoaderImage = () => ({
+    test: /\.(png|jpg|gif|ico)$/,
+    loaders: ['file-loader'],
+});
+
+const make = (mode) => {
+    const nodeConf = getNode(mode);
 
     return {
-        entry: getEntry(mode),
-        output: getOutput(mode),
-        module: {
-            loaders: getLoaders(mode),
+        entry: mode === 'client' ? './src/index.js' : './src/server.js',
+        output: {
+            path: path.join(__dirname, 'dist/static'),
+            publicPath: '/static/',
+            filename: mode === 'client' ? 'index.js' : '../server.js',
+            pathinfo: true
         },
-        plugins: getPlugins(mode),
+        module: {
+            loaders: [
+                getLoaderJsx(),
+                getLoaderSvg(),
+                mode === 'client' ? getLoaderCssClient() : getLoaderCssNode(),
+                getLoaderImage()
+            ],
+        },
+        plugins: mode === 'client' ? [
+            getPluginUglify(),
+            getPluginCss()
+        ] : [
+            getPluginUglify(),
+        ],
         target: nodeConf.target,
         node: nodeConf.node
     };
-}
+};
 
 module.exports = [
     make('client'),
