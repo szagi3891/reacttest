@@ -1,44 +1,43 @@
-import React, { Component } from 'react';
+// @flow
+
+import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-class App extends Component {
+import { createRxComponent } from './Base';
+import Store from './Store';
 
-    constructor(props) {
-        super(props);
+type PropsInType = {||};
 
-        console.log('utworzono egzemtlarz klasy App');
+type PropsOutType = {|
+    data: string,
+|};
 
-        this.state = {
-            test: 1,
-            test2: 2
-        };
-        this._trzecia = 3;
-    }
+const mapToProps = (props$: Observable<PropsInType>): Observable<PropsOutType> => {
+    return Store.data$.map(
+        (data: string) => ({
+            data
+        })
+    );
+};
 
-  componentWillMount() {
-    this.setState({
-      test : 111
-    });
-  }
-
-  render() {
+const AppFn = (props: PropsOutType): React.Element<*> => {
     console.warn('rerender ....');
 
-    const { test, test2 } = this.state;
+    const { data } = props;
 
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React "__{ test }__{ test2 }....{ this._trzecia }===="</h2>
+        <div className="App">
+            <div className="App-header">
+                <img src={logo} className="App-logo" alt="logo" />
+                <h2>Welcome to React "{data}"</h2>
+            </div>
+            <p className="App-intro">
+                To get started, edit <code>src/App.js</code> and save to reload.
+            </p>
         </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
     );
-  }
-}
+};
 
+const App: (props: PropsInType) => React.Element<*> = createRxComponent(mapToProps, AppFn);
 export default App;

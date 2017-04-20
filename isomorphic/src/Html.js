@@ -5,6 +5,7 @@ import App from './App';
 import favicon from './favicon.ico';
 
 type PropsType = {|
+    initValue: any,
     content: string,
 |};
 
@@ -18,7 +19,7 @@ const Html = (props: PropsType) => (
             <title>React App</title>
         </head>
         <body>
-            <div id='root' dangerouslySetInnerHTML={{__html: props.content}} />
+            <div id='root' dangerouslySetInnerHTML={{__html: props.content}} data-init={props.initValue} />
             <script type='text/javascript' src='/static/index.js' />
         </body>
     </html>
