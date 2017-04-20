@@ -1,9 +1,14 @@
+//@flow
 import React from 'react';
 import App from './App';
 
 import favicon from './favicon.ico';
 
-const Html = () => (
+type PropsType = {|
+    content: string,
+|};
+
+const Html = (props: PropsType) => (
     <html lang="en">
         <head>
             <meta charset="utf-8" />
@@ -13,9 +18,7 @@ const Html = () => (
             <title>React App</title>
         </head>
         <body>
-            <div id='root'>
-                <App />
-            </div>
+            <div id='root' dangerouslySetInnerHTML={{__html: props.content}} />
             <script type='text/javascript' src='/static/index.js' />
         </body>
     </html>

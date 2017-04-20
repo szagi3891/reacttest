@@ -18,8 +18,8 @@ app.get('/', (req, res) => {
         'Item 1',
     ];
 */
-
-    res.end(renderToString(<Html />));
+    const content = renderToString(<App />);
+    res.end(renderToString(<Html content={content} />));
 });
 
 app.use('/static', Express.static('static'));
