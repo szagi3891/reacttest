@@ -28,7 +28,7 @@
   "scripts": {
     "build": "rimraf dist && webpack --config webpack.config.js",
     "run": "cd dist && node ./server.js",
-    "dev": "webpack-dev-server --content-base dist",
+    "serve": "webpack --progress --colors --watch",
     "flow-status": "flow status"
   }
 }

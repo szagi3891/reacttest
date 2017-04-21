@@ -65,6 +65,7 @@ const make = (mode) => {
             filename: mode === 'client' ? 'index.js' : '../server.js',
             pathinfo: true
         },
+        watch: true,
         module: {
             loaders: [
                 getLoaderJsx(),
