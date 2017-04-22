@@ -16,7 +16,7 @@ const Html = (props: PropsType) => (
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <link rel="shortcut icon" href={favicon} />
             <link rel="stylesheet" href="/static/styles.css" type="text/css" media="screen" />
-            <title>React App</title>
+            <title>React Appasd</title>
         </head>
         <body>
             <div id='root' dangerouslySetInnerHTML={{__html: props.content}} data-init={props.initValue} />

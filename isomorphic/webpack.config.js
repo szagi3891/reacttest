@@ -58,14 +58,20 @@ const make = (mode) => {
     const nodeConf = getNode(mode);
 
     return {
-        entry: mode === 'client' ? './src/index.js' : './src/server.js',
+        entry: mode === 'client' ? [
+            'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=2000',
+            './src/index.js'
+        ] : [
+            './src/server.js'
+            //'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000'
+        ],
         output: {
             path: path.join(__dirname, 'dist/static'),
             publicPath: '/static/',
             filename: mode === 'client' ? 'index.js' : '../server.js',
             pathinfo: true
         },
-        watch: true,
+        //watch: true,
         module: {
             loaders: [
                 getLoaderJsx(),
