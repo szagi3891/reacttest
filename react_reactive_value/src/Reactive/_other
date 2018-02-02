@@ -1,0 +1,13 @@
+
+    /*
+    startWith(initValue: T): ValueObservable<T> {
+        return ValueObservable._createFromObserver(initValue, this._data);                  //eslint-disable-line no-use-before-define
+    }
+    */
+
+    /*
+    static timer(startValue: number, timeout: number): ValueObservable<number> {
+        const newObserver = Rx.Observable.timer(startValue, timeout).startWith(startValue).distinctUntilChanged();
+        return ValueObservable._create(newObserver);                                        //eslint-disable-line no-use-before-define
+    }
+    */
